@@ -1,0 +1,14 @@
+<resources>
+
+    <string-array name="cities">
+        <item>Ижевск</item>
+        <item>Воткинск</item>
+        <item>Сарапул</item>
+        <item>Можга</item>
+        <item>Глазов</item>
+        <item>Нефтекамск</item>
+        <item>Набережные Челны</item>
+        <item>Нижнекамск</item>
+    </string-array>
+    
+</resources>
