@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-</ListView>
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <!-- Pretty hint text, and maxLines -->
+    <EditText android:id="@+building_list/search_box" 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/filter_by_name"
+        android:inputType="text"
+        android:maxLines="1"/>
+
+    <!-- Set height to 0, and let the weight param expand it -->
+    <!-- Note the use of the default ID! This lets us use a  ListActivity still! -->
+    <ListView android:id="@android:id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1" 
+         /> 
+</LinearLayout>

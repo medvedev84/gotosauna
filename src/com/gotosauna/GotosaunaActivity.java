@@ -31,9 +31,9 @@ public class GotosaunaActivity extends Activity {
                 this, R.array.cities, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         s.setAdapter(adapter);
-        
-        initSeekBar(R.id.seekBarPrice, R.id.textViewPrice, R.string.price);
-        initSeekBar(R.id.seekBarSize, R.id.textViewSize, R.string.size);
+                
+        initSeekBar(R.id.seekBarPrice, R.id.textViewPrice, R.string.price, R.string.less_than, R.string.rub_per_hour);
+        initSeekBar(R.id.seekBarSize, R.id.textViewSize, R.string.size, R.string.great_than, R.string.persons);
 
         final Button buttonSearch = (Button) findViewById(R.id.buttonSearch);
         buttonSearch.setOnClickListener(new View.OnClickListener()
@@ -66,14 +66,14 @@ public class GotosaunaActivity extends Activity {
     	return sb.toString();
     }
     
-    private void initSeekBar(int seekBarId, final int textViewId, final int stringId){
-    	SeekBar seekBarSize = (SeekBar) findViewById(seekBarId);
-    	seekBarSize.setOnSeekBarChangeListener( new OnSeekBarChangeListener()
+    private void initSeekBar(int seekBarId, final int textViewId, final int stringId, final int stringDelimeterId, final int stringCountId){
+    	SeekBar seekBar = (SeekBar) findViewById(seekBarId);
+    	setTextView(textViewId, stringId, stringDelimeterId, seekBar.getProgress(), stringCountId);
+    	seekBar.setOnSeekBarChangeListener( new OnSeekBarChangeListener()
 		{
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
 			{
-				TextView textViewPrice = (TextView) findViewById(textViewId);			
-				textViewPrice.setText(getResources().getString(stringId) + " < " + progress);			 
+				setTextView(textViewId, stringId, stringDelimeterId, progress, stringCountId);		 
 			}
 
 			public void onStartTrackingTouch(SeekBar arg0) {
@@ -82,5 +82,10 @@ public class GotosaunaActivity extends Activity {
 			public void onStopTrackingTouch(SeekBar arg0) {
 			}
 		});    	
-    }   
+    }
+    
+    private void setTextView(int textViewId, int stringId, int stringDelimeterId, int progress, int stringCountId){    	
+		TextView textView = (TextView) findViewById(textViewId);			
+		textView.setText(getResources().getString(stringId) + " " + getResources().getString(stringDelimeterId) + " " + progress + " " + getResources().getString(stringCountId));    
+    }
 }

@@ -8,6 +8,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,14 +19,15 @@ import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupClickListener;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class SaunaShowActivity extends Activity  {
 	private static final String URL_KEY="url";
-	private static final String DEBUG_TAG = "GoToSauna";	
+	private static final String DEBUG_TAG = "GoToSauna";
+	private static final int ACTIVITY_PHOTOS=2;
 	
-	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -35,7 +40,25 @@ public class SaunaShowActivity extends Activity  {
   		     public void run() {
   		    	new DownloadWebpageText().execute(url);
   		    }
-  		});  	   
+  		});  	
+  		
+        final Button buttonPhotos = (Button) findViewById(R.id.buttonPhotos);
+        buttonPhotos.setOnClickListener(new View.OnClickListener()
+        	{
+                public void onClick(View v)
+                {                	
+                    ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+                    NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+                    if (networkInfo != null && networkInfo.isConnected()) {                    	                    	                    	                    	
+                       // Intent intent = new Intent(v.getContext(), ImageDownloaderTestActivity.class);                      
+                    	Intent intent = new Intent(v.getContext(), SaunaPhotosActivity.class);
+                        startActivityForResult(intent, ACTIVITY_PHOTOS);                              	
+                    } else {
+                    	Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
+                    }
+                    
+                }
+            });  		
 	}
 	    
     private class DownloadWebpageText extends AsyncTask<String, Integer, JSONObject> {
@@ -70,7 +93,7 @@ public class SaunaShowActivity extends Activity  {
                 TextView phone = (TextView) findViewById(R.id.phone);
                 phone.setText(result.getString("phone_number1"));  
                 
-                JSONArray array = new JSONObject().getJSONArray("sauna_items");				
+                JSONArray array = result.getJSONArray("sauna_items");				
                 ArrayList<String> groups = new ArrayList<String>();
                 ArrayList<ArrayList<String>> children = new ArrayList<ArrayList<String>>();
                 for (int i = 0; i < array.length(); i++) {
@@ -83,8 +106,7 @@ public class SaunaShowActivity extends Activity  {
                     content.add(jo.getString("capacity"));
                     children.add(content);
                 }
-                initExpandable(groups, children);
-                
+                initExpandable(groups, children);                
 			} catch (JSONException e) {
 				Log.d(DEBUG_TAG, "JSON failed: " + e.getMessage());
 			}   	 			 		
@@ -92,7 +114,8 @@ public class SaunaShowActivity extends Activity  {
 	  
 	    private void initExpandable(ArrayList<String> groups, ArrayList<ArrayList<String>> children){
 	    	ExpandableListView listView = (ExpandableListView) findViewById(R.id.saunaItems);
-	        listView.setOnChildClickListener(new OnChildClickListener()
+	        /*
+	    	listView.setOnChildClickListener(new OnChildClickListener()
 	        {	           
 	            public boolean onChildClick(ExpandableListView arg0, View arg1, int arg2, int arg3, long arg4)
 	            {
@@ -109,12 +132,9 @@ public class SaunaShowActivity extends Activity  {
 					return false;
 				}	            	     
 	        });
+	        */
 
-	        // Initialize the adapter with blank groups and children
-	        // We will be adding children on a thread, and then update the ListView
 	        ExpandableListAdapter adapter = new ExpandableListAdapter(getApplicationContext(), groups, children);
-
-	        // Set this blank adapter to the list view
 	        listView.setAdapter(adapter);	    
 	    
 	    }

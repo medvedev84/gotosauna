@@ -9,7 +9,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dip"
-        android:text="@string/city"
+        android:text="@string/city"        
     />
 
     <Spinner 
@@ -26,11 +26,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dip"
         android:text="@string/price"
-    />
+    />
     <SeekBar
         android:id="@+id/seekBarPrice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:progress="1000"        
         android:max="2000" />
        
     <TextView
@@ -45,6 +46,7 @@
         android:id="@+id/seekBarSize"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:progress="10"  
         android:max="20"
          />    
 

@@ -1,13 +1,6 @@
 package com.gotosauna;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -19,15 +12,16 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class SaunaListActivity extends ListActivity  {
 	private static final String URL_KEY="url";
@@ -36,6 +30,7 @@ public class SaunaListActivity extends ListActivity  {
 	private static final String SHOW_SAUNA_URL = "http://go-to-sauna.ru/saunas/";
 	 
 	private HashMap<String, String> map = new HashMap<String, String>();
+	ArrayAdapter<String> adapter = null;
 	
 	/** Called when the activity is first created. */
 	@Override
@@ -44,12 +39,18 @@ public class SaunaListActivity extends ListActivity  {
 
   		Bundle extras = getIntent().getExtras(); 
   		final String url = extras.getString(URL_KEY);
-  		
+
+  	    setContentView(R.layout.sauna_list);
+  	  
   		runOnUiThread(new Runnable() {
   		     public void run() {
   		    	new DownloadWebpageText().execute(url);
   		    }
-  		});  	   
+  		});  	
+  		
+  		
+  		EditText filterText = (EditText) findViewById(R.building_list.search_box);
+  	    filterText.addTextChangedListener(filterTextWatcher);
 	}
 	    
     private class DownloadWebpageText extends AsyncTask<String, Integer, JSONArray> {
@@ -82,7 +83,8 @@ public class SaunaListActivity extends ListActivity  {
                     map.put(jo.getString("name"), jo.getString("id"));
                 }
 				
-				setListAdapter(new ArrayAdapter<String>(getApplicationContext(), R.layout.sauna_item, listItems)); 
+                adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.sauna_item, listItems);
+				setListAdapter(adapter); 
 			} catch (JSONException e) {
 				Log.d(DEBUG_TAG, "JSON failed: " + e.getMessage());
 			}   	 
@@ -105,8 +107,23 @@ public class SaunaListActivity extends ListActivity  {
 	    	sb.append("?json=true");	    	       
 	    	return sb.toString();
 	    }
-
-		
-		
     } 	
+    
+    private TextWatcher filterTextWatcher = new TextWatcher() {
+
+        public void beforeTextChanged(CharSequence s, int start, int count,
+                int after) {
+        }
+
+        public void onTextChanged(CharSequence s, int start, int before,
+                int count) {
+            adapter.getFilter().filter(s);
+        }
+
+		public void afterTextChanged(Editable arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+    };
+    
 }
