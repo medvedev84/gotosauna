@@ -1,5 +1,6 @@
-package com.gotosauna;
+package com.gotosauna.activity.search;
 
+import com.gotosauna.R;
 import com.gotosauna.activity.list.SaunaListActivity;
 
 import android.app.Activity;
@@ -17,7 +18,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class GotosaunaActivity extends Activity {
+public class SaunaSearchActivity extends Activity {
 	private static final String URL_KEY="url";	   
 	private static final int ACTIVITY_SEARCH=0;
 	private static final String LIST_SAUNAS_URL = "http://go-to-sauna.ru/saunas?json=true";
@@ -26,7 +27,7 @@ public class GotosaunaActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.sauna_search);
         
         Spinner s = (Spinner) findViewById(R.id.spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
@@ -50,7 +51,8 @@ public class GotosaunaActivity extends Activity {
                         startActivityForResult(intent, ACTIVITY_SEARCH);                              	
                     } else {
                     	Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
-                    }                    
+                    }
+                    
                 }
             });
     }

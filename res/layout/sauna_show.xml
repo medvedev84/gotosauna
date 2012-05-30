@@ -22,16 +22,9 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dip"/>
-
-
-    <Button
-        android:id="@+id/buttonPhotos"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="photos" />
         
-    <ExpandableListView
-        android:id="@+id/saunaItems"
+    <ExpandableListView 
+        android:id="@+id/sauna_items" 
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
     </ExpandableListView>

@@ -11,5 +11,6 @@
 	<string name="less_than">менее</string>	
 	<string name="rub_per_hour">руб./час</string>	
 	<string name="persons">чел.</string>		
-	<string name="filter_by_name">поиск по названию</string>			
+	<string name="filter_by_name">поиск по названию</string>	
+	<string name="photo_gallery">Фотогаллерея</string>		
 </resources>
