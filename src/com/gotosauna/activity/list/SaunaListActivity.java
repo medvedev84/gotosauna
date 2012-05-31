@@ -9,9 +9,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.gotosauna.R;
-import com.gotosauna.R.building_list;
-import com.gotosauna.R.layout;
 import com.gotosauna.activity.show.SaunaShowActivity;
+import com.gotosauna.core.Sauna;
 import com.gotosauna.util.JSONDownloader;
 
 import android.app.ListActivity;
@@ -32,35 +31,32 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class SaunaListActivity extends ListActivity  {
 	private static final String URL_KEY = "url";
 	private static final String DEBUG_TAG = "GoToSauna";	
 	private static final int ACTIVITY_SHOW = 1;
-	private static final int ACTIVITY_CALL = 2;
 	private static final String SHOW_SAUNA_URL = "http://go-to-sauna.ru/saunas/";
 	
 	private static final int ITEM_CALL = 1;
 	private static final int ITEM_VIEW = 2;
 	
-	private HashMap<String, String> map = new HashMap<String, String>();
-	
+	private HashMap<String, Sauna> saunas = new HashMap<String, Sauna>();
+	Sauna selectedSauna;
 	
 	ArrayAdapter<String> adapter = null;
 	
-	String saunaId;
+
 	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+  	    setContentView(R.layout.sauna_list);
+  	    
   		Bundle extras = getIntent().getExtras(); 
   		final String url = extras.getString(URL_KEY);
 
-  	    setContentView(R.layout.sauna_list);
-  	  
   		runOnUiThread(new Runnable() {
   		     public void run() {
   		    	new DownloadWebpageText().execute(url);
@@ -74,10 +70,10 @@ public class SaunaListActivity extends ListActivity  {
     @Override  
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {      	
     	super.onCreateContextMenu(menu, v, menuInfo);     	
-    	saunaId = map.get((String) ((TextView)((AdapterView.AdapterContextMenuInfo) menuInfo).targetView).getText());    	    	
-        menu.setHeaderTitle("Context Menu");  
-        menu.add(0, ITEM_CALL, 0, "Call");  
-        menu.add(0, ITEM_VIEW, 0, "View");  
+    	selectedSauna = saunas.get((String) ((TextView)((AdapterView.AdapterContextMenuInfo) menuInfo).targetView).getText());    	    	
+        menu.setHeaderTitle(getResources().getString(R.string.select_action));  
+        menu.add(0, ITEM_CALL, 0, getResources().getString(R.string.call_to_sauna));  
+        menu.add(0, ITEM_VIEW, 0, getResources().getString(R.string.view_sauna));  
     }  	
     
     @Override  
@@ -97,20 +93,20 @@ public class SaunaListActivity extends ListActivity  {
   
     public void callToSauna(){  
     	Intent intent = new Intent(Intent.ACTION_CALL);
-    	intent.setData(Uri.parse("tel:" + "+79043102536"));
+    	intent.setData(Uri.parse("tel:" + selectedSauna.getPhoneNumber()));
     	startActivity(intent);    	
     }  
     
     public void viewSauna(){  
-		String url = prepareUrl(saunaId);
+		String url = prepareUrl();
         Intent intent = new Intent(getApplicationContext(), SaunaShowActivity.class);
         intent.putExtra(URL_KEY, url);
         startActivityForResult(intent, ACTIVITY_SHOW);      	    	
     } 
 	    
-    public String prepareUrl(String saunaId){	    		
+    public String prepareUrl(){	    		
     	StringBuffer sb = new StringBuffer(SHOW_SAUNA_URL);
-    	sb.append(saunaId);
+    	sb.append(selectedSauna.getId());
     	sb.append("?json=true");	    	       
     	return sb.toString();
     }
@@ -141,8 +137,8 @@ public class SaunaListActivity extends ListActivity  {
 				ArrayList<String> listItems = new ArrayList<String>();
                 for (int i = 0; i < result.length(); i++) {
                     JSONObject jo = (JSONObject) result.get(i);                    
-                    listItems.add(jo.getString("name"));
-                    map.put(jo.getString("name"), jo.getString("id"));                    
+                    listItems.add(jo.getString("name"));                    
+                    saunas.put(jo.getString("name"), new Sauna(jo.getString("id"), jo.getString("name"), jo.getString("phoneNumber")));                    
                 }				
                 adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.sauna_item, listItems);
 				setListAdapter(adapter); 
@@ -155,13 +151,11 @@ public class SaunaListActivity extends ListActivity  {
   			
   			lv.setOnItemClickListener(new OnItemClickListener() {
   				public void onItemClick(AdapterView<?> arg0, View view, int arg2, long arg3) {
-  					saunaId = map.get((String)((TextView) view).getText());
-  					/*
-  					String url = prepareUrl((String)((TextView) view).getText());
+  					selectedSauna = saunas.get((String)((TextView) view).getText());  					
+  					String url = prepareUrl();
                     Intent intent = new Intent(getApplicationContext(), SaunaShowActivity.class);
                     intent.putExtra(URL_KEY, url);
-                    startActivityForResult(intent, ACTIVITY_SHOW);
-                    */
+                    startActivityForResult(intent, ACTIVITY_SHOW);                    
   				}
   			});
   			 
