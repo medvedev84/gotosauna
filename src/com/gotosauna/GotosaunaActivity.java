@@ -1,92 +1,128 @@
 package com.gotosauna;
 
-import com.gotosauna.activity.list.SaunaListActivity;
+import java.io.IOException;
+import java.util.ArrayList;
 
-import android.app.Activity;
-import android.content.Context;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.gotosauna.activity.list.CityListActivity;
+import com.gotosauna.activity.search.SaunaSearchActivity;
+import com.gotosauna.core.City;
+import com.gotosauna.util.GlobalStore;
+import com.gotosauna.util.JSONDownloader;
+
+import android.app.ListActivity;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.ListView;
+import android.widget.AdapterView.OnItemClickListener;
 
-public class GotosaunaActivity extends Activity {
-	private static final String URL_KEY="url";	   
-	private static final int ACTIVITY_SEARCH=0;
-	private static final String LIST_SAUNAS_URL = "http://go-to-sauna.ru/saunas?json=true";
+public class GotosaunaActivity extends ListActivity {	
+
+	private static final int MENU_SEARCH = 0;
+	private static final int MENU_MAP = 1;
+	private static final int MENU_CITIES = 2;	
+	private static final int MENU_ABOUT = 3;
 	
-    /** Called when the activity is first created. */
+	private static final int ACTIVITY_SEARCH = 1;
+	private static final int ACTIVITY_MAP = 2;
+	private static final int ACTIVITY_CITIES = 3;
+	private static final int ACTIVITY_ABOUT = 4;
+	
+	private static final String GET_CITIES_URL = "http://go-to-sauna.ru/cities?json=true";
+	
+	private ArrayList<String> menu_list = new ArrayList<String>();
+	ArrayList<City> cities = new ArrayList<City>();
+	
+	ArrayAdapter<String> adapter = null;
+	GlobalStore	globalStore;
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        
-        Spinner s = (Spinner) findViewById(R.id.spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                this, R.array.cities, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        s.setAdapter(adapter);
-                
-        initSeekBar(R.id.seekBarPrice, R.id.textViewPrice, R.string.price, R.string.less_than, R.string.rub_per_hour);
-        initSeekBar(R.id.seekBarSize, R.id.textViewSize, R.string.size, R.string.great_than, R.string.persons);
-
-        final Button buttonSearch = (Button) findViewById(R.id.buttonSearch);
-        buttonSearch.setOnClickListener(new View.OnClickListener()
-        	{
-                public void onClick(View v)
-                {                	
-                    ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-                    NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-                    if (networkInfo != null && networkInfo.isConnected()) {                    	                    	                    	                    	
-                        Intent intent = new Intent(v.getContext(), SaunaListActivity.class);
-                        intent.putExtra(URL_KEY, prepareUrl());
-                        startActivityForResult(intent, ACTIVITY_SEARCH);                              	
-                    } else {
-                    	Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
-                    }                    
-                }
-            });
+       	         
+        menu_list.add(MENU_SEARCH, getResources().getString(R.string.menu_search));
+        menu_list.add(MENU_MAP, getResources().getString(R.string.menu_map));
+        menu_list.add(MENU_CITIES, getResources().getString(R.string.menu_cities));
+        menu_list.add(MENU_ABOUT, getResources().getString(R.string.menu_about));
+        	
+        adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.menu_item, menu_list);
+		setListAdapter(adapter); 
+		
+  		ListView lv = getListView();
+		lv.setTextFilterEnabled(true);				
+		lv.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
+				Intent intent = null;
+				switch (position) {
+					case MENU_SEARCH:
+						intent = new Intent(getApplicationContext(), SaunaSearchActivity.class);			     
+			            startActivityForResult(intent, ACTIVITY_SEARCH);                    
+						break;
+					case MENU_MAP:
+						intent = new Intent(getApplicationContext(), SaunaSearchActivity.class);			     
+			            startActivityForResult(intent, ACTIVITY_MAP);                    
+						break;
+					case MENU_CITIES:
+						intent = new Intent(getApplicationContext(), CityListActivity.class);			     
+			            startActivityForResult(intent, ACTIVITY_CITIES);                    
+						break;		
+					case MENU_ABOUT:
+						intent = new Intent(getApplicationContext(), SaunaSearchActivity.class);			     
+			            startActivityForResult(intent, ACTIVITY_ABOUT);                    
+						break;							
+				}
+			}
+		});	
+				
+		globalStore = ((GlobalStore) getApplicationContext());
+		if (globalStore.getCities().isEmpty()) {
+	  		runOnUiThread(new Runnable() {
+	 		     public void run() {
+	 		    	new DownloadWebpageText().execute(GET_CITIES_URL);
+	 		    }
+	 		}); 
+		}		
     }
     
-    private String prepareUrl(){
-    	SeekBar seekBarSize = (SeekBar) findViewById(R.id.seekBarSize);
-    	int size = seekBarSize.getProgress();    	
-    	SeekBar seekBarPrice = (SeekBar) findViewById(R.id.seekBarPrice);
-    	int price = seekBarPrice.getProgress();    	
-    	StringBuffer sb = new StringBuffer(LIST_SAUNAS_URL);
-    	sb.append("&q%5Bsauna_items_capacity_gteq=" + size);
-    	sb.append("&q%5Bsauna_items_min_price_lteq=" + price);
-    	sb.append("&q%5Baddress_city_id_eq=1");        
-    	return sb.toString();
-    }
-    
-    private void initSeekBar(int seekBarId, final int textViewId, final int stringId, final int stringDelimeterId, final int stringCountId){
-    	SeekBar seekBar = (SeekBar) findViewById(seekBarId);
-    	setTextView(textViewId, stringId, stringDelimeterId, seekBar.getProgress(), stringCountId);
-    	seekBar.setOnSeekBarChangeListener( new OnSeekBarChangeListener()
-		{
-			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
-			{
-				setTextView(textViewId, stringId, stringDelimeterId, progress, stringCountId);		 
-			}
-
-			public void onStartTrackingTouch(SeekBar arg0) {
-			}
-
-			public void onStopTrackingTouch(SeekBar arg0) {
-			}
-		});    	
-    }
-    
-    private void setTextView(int textViewId, int stringId, int stringDelimeterId, int progress, int stringCountId){    	
-		TextView textView = (TextView) findViewById(textViewId);			
-		textView.setText(getResources().getString(stringId) + " " + getResources().getString(stringDelimeterId) + " " + progress + " " + getResources().getString(stringCountId));    
-    }
+    private class DownloadWebpageText extends AsyncTask<String, Integer, JSONArray> {
+		@Override
+		protected JSONArray doInBackground(String... urls) {
+            String url = urls[0];
+			try {
+                 return (JSONArray) JSONDownloader.downloadUrl(url, true);
+            } catch (IOException e) {
+                return null;
+            }		
+		}
+       
+		@Override
+		 protected void onProgressUpdate(Integer... progress) {
+			 super.onProgressUpdate(progress);			 
+		 }
+	     
+		@Override
+		protected void onPostExecute(JSONArray result) {
+			fillListView(result);
+		}		
+		
+	    private void fillListView(JSONArray result){
+			try {				
+                for (int i = 0; i < result.length(); i++) {
+                    JSONObject jo = (JSONObject) result.get(i);                                        
+                    cities.add( new City(jo.getString("id"), jo.getString("name")));                                     
+                }				
+                globalStore.setCities(cities);
+			} catch (JSONException e) {
+				//TODO
+			}   	   			 
+	    }	   
+    } 	  
 }

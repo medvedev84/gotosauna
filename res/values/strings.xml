@@ -16,4 +16,8 @@
 	<string name="select_action">Выберите действие</string>	
 	<string name="call_to_sauna">Позвонить в сауну</string>	
 	<string name="view_sauna">Посмотреть информацию</string>	
+	<string name="menu_search">Поиск саун</string>	
+	<string name="menu_cities">Сауны по городам</string>
+	<string name="menu_map">Сауны на карте</string>
+	<string name="menu_about">О программе</string>
 </resources>

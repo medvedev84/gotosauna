@@ -1,65 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:padding="10dip"
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
 
-    <TextView
+    <!-- Set height to 0, and let the weight param expand it -->
+    <!-- Note the use of the default ID! This lets us use a  ListActivity still! -->
+    <ListView android:id="@android:id/list"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dip"
-        android:text="@string/city"        
-    />
-
-    <Spinner 
-        android:id="@+id/spinner"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:drawSelectorOnTop="true"
-        android:prompt="@string/city"
-    />
-
-    <TextView
-        android:id="@+id/textViewPrice"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dip"
-        android:text="@string/price"
-    />
-    <SeekBar
-        android:id="@+id/seekBarPrice"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:progress="1000"        
-        android:max="2000" />
-       
-    <TextView
-        android:id="@+id/textViewSize"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dip"
-        android:text="@string/size"
-    />
-    
-    <SeekBar
-        android:id="@+id/seekBarSize"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:progress="10"  
-        android:max="20"
-         />    
-
-    <CheckBox
-        android:id="@+id/checkBoxPhoto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/photo" />
-
-    <Button
-        android:id="@+id/buttonSearch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/search" />
-
+        android:layout_height="0dip"
+        android:layout_weight="1" 
+         /> 
 </LinearLayout>

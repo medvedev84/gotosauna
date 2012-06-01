@@ -138,7 +138,7 @@ public class SaunaListActivity extends ListActivity  {
                 for (int i = 0; i < result.length(); i++) {
                     JSONObject jo = (JSONObject) result.get(i);                    
                     listItems.add(jo.getString("name"));                    
-                    saunas.put(jo.getString("name"), new Sauna(jo.getString("id"), jo.getString("name"), jo.getString("phoneNumber")));                    
+                    saunas.put(jo.getString("name"), new Sauna(jo.getString("id"), jo.getString("name"), jo.getString("phone_number1")));                    
                 }				
                 adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.sauna_item, listItems);
 				setListAdapter(adapter); 
