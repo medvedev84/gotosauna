@@ -7,8 +7,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.gotosauna.GotosaunaActivity;
 import com.gotosauna.R;
+import com.gotosauna.activity.map.SaunaMapActivity;
 import com.gotosauna.activity.photo.SaunaPhotosActivity;
+import com.gotosauna.core.Sauna;
 import com.gotosauna.util.JSONDownloader;
 
 import android.app.Activity;
@@ -22,12 +25,13 @@ import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.TextView;
 
 public class SaunaShowActivity extends Activity  {
-	private static final String URL_KEY="url";
+	private static final String URL_KEY = "url";
+	private static final String SAUNA_KEY = "sauna";
 	private static final String DEBUG_TAG = "GoToSauna";
 	private static final int ACTIVITY_PHOTOS=2;
 	private static final String PHOTOS_SAUNAS_URL = "http://go-to-sauna.ru/sauna_photos/";
 	
-	private int saunaId;
+	private Sauna sauna;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -46,7 +50,7 @@ public class SaunaShowActivity extends Activity  {
 	
     public String prepareUrl(){    	
     	StringBuffer sb = new StringBuffer(PHOTOS_SAUNAS_URL);
-    	sb.append(saunaId);
+    	sb.append(sauna.getId());
     	sb.append("?json=true");	    	       
     	return sb.toString();
     }		
@@ -75,16 +79,16 @@ public class SaunaShowActivity extends Activity  {
 		
 	    private void fillView(JSONObject result){
 			try {	
-				saunaId = result.getInt("id");
+				sauna = new Sauna(result.getString("id"), result.getString("name"), result.getString("phone_number1"), result.getString("full_address"));
 				
                 TextView name = (TextView) findViewById(R.id.name);
-                name.setText(result.getString("name"));
+                name.setText(sauna.getName());
                 
                 TextView address = (TextView) findViewById(R.id.address);
-                address.setText(result.getString("full_address"));
+                address.setText(sauna.getAddress());
                 
                 TextView phone = (TextView) findViewById(R.id.phone);
-                phone.setText(result.getString("phone_number1"));  
+                phone.setText(sauna.getPhoneNumber());  
                 
                 JSONArray array = result.getJSONArray("sauna_items");				
                 ArrayList<String> groups = new ArrayList<String>();
@@ -93,6 +97,10 @@ public class SaunaShowActivity extends Activity  {
                 // Add "Photo" row
                 groups.add(getResources().getString(R.string.photo_gallery));
                 children.add(new ArrayList<String>());
+                
+                // Add "Map" row
+                groups.add(getResources().getString(R.string.show_on_map));
+                children.add(new ArrayList<String>());                
                 
                 // Add "Sauna items" rows
                 for (int i = 0; i < array.length(); i++) {
@@ -119,10 +127,15 @@ public class SaunaShowActivity extends Activity  {
 	        listView.setOnGroupClickListener(new OnGroupClickListener()
 	        {
 				public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+					Intent intent;
 					if (groupPosition == 0) {					
-                    	Intent intent = new Intent(v.getContext(), SaunaPhotosActivity.class);
+                    	intent = new Intent(v.getContext(), SaunaPhotosActivity.class);
                     	intent.putExtra(URL_KEY, prepareUrl());
                         startActivityForResult(intent, ACTIVITY_PHOTOS);  						
+					} else if (groupPosition == 1) {
+						intent = new Intent(v.getContext(), SaunaMapActivity.class);
+						intent.putExtra(SAUNA_KEY,  new String[] {sauna.getId(), sauna.getName(), sauna.getPhoneNumber(), sauna.getAddress()});
+						startActivity(intent);  
 					}					
 					return false;
 				}	            	     

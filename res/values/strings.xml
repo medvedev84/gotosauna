@@ -13,6 +13,7 @@
 	<string name="persons">чел.</string>		
 	<string name="filter_by_name">поиск по названию</string>	
 	<string name="photo_gallery">Фотогаллерея</string>	
+	<string name="show_on_map">Показать на карте</string>	
 	<string name="select_action">Выберите действие</string>	
 	<string name="call_to_sauna">Позвонить в сауну</string>	
 	<string name="view_sauna">Посмотреть информацию</string>	
@@ -20,4 +21,6 @@
 	<string name="menu_cities">Сауны по городам</string>
 	<string name="menu_map">Сауны на карте</string>
 	<string name="menu_about">О программе</string>
+	<string name="application_error">Ошибка приложения</string>
+	<string name="could_not_find_location">Не удалось определить местоположение</string>
 </resources>

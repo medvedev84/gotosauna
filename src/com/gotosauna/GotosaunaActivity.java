@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.gotosauna.activity.list.CityListActivity;
+import com.gotosauna.activity.map.SaunaMapActivity;
 import com.gotosauna.activity.search.SaunaSearchActivity;
 import com.gotosauna.core.City;
 import com.gotosauna.util.GlobalStore;
@@ -67,8 +68,8 @@ public class GotosaunaActivity extends ListActivity {
 			            startActivityForResult(intent, ACTIVITY_SEARCH);                    
 						break;
 					case MENU_MAP:
-						intent = new Intent(getApplicationContext(), SaunaSearchActivity.class);			     
-			            startActivityForResult(intent, ACTIVITY_MAP);                    
+						intent = new Intent(GotosaunaActivity.this, SaunaMapActivity.class);			     
+						startActivity(intent);  
 						break;
 					case MENU_CITIES:
 						intent = new Intent(getApplicationContext(), CityListActivity.class);			     
@@ -83,7 +84,7 @@ public class GotosaunaActivity extends ListActivity {
 		});	
 				
 		globalStore = ((GlobalStore) getApplicationContext());
-		if (globalStore.getCities().isEmpty()) {
+		if (globalStore.getCities() == null || globalStore.getCities().isEmpty()) {
 	  		runOnUiThread(new Runnable() {
 	 		     public void run() {
 	 		    	new DownloadWebpageText().execute(GET_CITIES_URL);
