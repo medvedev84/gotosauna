@@ -9,7 +9,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.gotosauna.R;
-import com.gotosauna.activity.photo.SaunaPhotosActivity;
 import com.gotosauna.activity.show.SaunaShowActivity;
 import com.gotosauna.activity.show.SaunaTabActivity;
 import com.gotosauna.core.Sauna;
@@ -24,7 +23,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuItem;
@@ -39,7 +37,6 @@ import android.widget.TextView;
 public class SaunaListActivity extends ListActivity  {
 	private static final String URL_KEY = "url";
 	private static final String SAUNA_ID_KEY = "saunaId";
-	private static final String DEBUG_TAG = "GoToSauna";	
 	private static final int ACTIVITY_SHOW = 1;
 	private static final String SHOW_SAUNA_URL = "http://go-to-sauna.ru/saunas/";
 	
@@ -50,8 +47,6 @@ public class SaunaListActivity extends ListActivity  {
 	Sauna selectedSauna;
 	
 	ArrayAdapter<String> adapter = null;
-	
-
 	
 	/** Called when the activity is first created. */
 	@Override
@@ -143,7 +138,6 @@ public class SaunaListActivity extends ListActivity  {
 		@Override
 		protected void onPostExecute(JSONArray result) {
 			fillListView(result);
-
 			progress.dismiss();
 		}		
 		
@@ -157,8 +151,7 @@ public class SaunaListActivity extends ListActivity  {
                 }				
                 adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.sauna_item, listItems);
 				setListAdapter(adapter); 
-			} catch (JSONException e) {
-				Log.d(DEBUG_TAG, "JSON failed: " + e.getMessage());
+			} catch (JSONException e) {				
 			}   	 
 			
   	  		ListView lv = getListView();
@@ -171,8 +164,7 @@ public class SaunaListActivity extends ListActivity  {
                     intent.putExtra(SAUNA_ID_KEY, selectedSauna.getId());
                     startActivityForResult(intent, ACTIVITY_SHOW);                    
   				}
-  			});
-  			 
+  			});  			 
   			registerForContextMenu(lv);
 	    }	   
     } 	
@@ -182,7 +174,9 @@ public class SaunaListActivity extends ListActivity  {
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            adapter.getFilter().filter(s);
+            if (adapter != null) {
+            	adapter.getFilter().filter(s);	
+            }        	
         }
 
 		public void afterTextChanged(Editable arg0) {}

@@ -17,25 +17,28 @@ public final class R {
         public static final int search_box=0x7f070000;
     }
     public static final class drawable {
-        public static final int ic_launcher=0x7f020000;
-        public static final int ic_tab_city=0x7f020001;
-        public static final int ic_tab_desc=0x7f020002;
-        public static final int ic_tab_desc_grey=0x7f020003;
-        public static final int ic_tab_desc_white=0x7f020004;
-        public static final int ic_tab_home_white=0x7f020005;
-        public static final int ic_tab_map=0x7f020006;
-        public static final int ic_tab_map_white=0x7f020007;
-        public static final int ic_tab_photo=0x7f020008;
-        public static final int ic_tab_photo_white=0x7f020009;
-        public static final int ic_tab_search=0x7f02000a;
-        public static final int ic_tab_search_grey=0x7f02000b;
-        public static final int ic_tab_search_white=0x7f02000c;
-        public static final int pail=0x7f02000d;
-        public static final int sauna=0x7f02000e;
+        public static final int ic_btn_call=0x7f020000;
+        public static final int ic_button_call=0x7f020001;
+        public static final int ic_launcher=0x7f020002;
+        public static final int ic_tab_city=0x7f020003;
+        public static final int ic_tab_desc=0x7f020004;
+        public static final int ic_tab_desc_grey=0x7f020005;
+        public static final int ic_tab_desc_white=0x7f020006;
+        public static final int ic_tab_home_white=0x7f020007;
+        public static final int ic_tab_map=0x7f020008;
+        public static final int ic_tab_map_white=0x7f020009;
+        public static final int ic_tab_photo=0x7f02000a;
+        public static final int ic_tab_photo_white=0x7f02000b;
+        public static final int ic_tab_search=0x7f02000c;
+        public static final int ic_tab_search_grey=0x7f02000d;
+        public static final int ic_tab_search_white=0x7f02000e;
+        public static final int pail=0x7f02000f;
+        public static final int sauna=0x7f020010;
     }
     public static final class id {
         public static final int LinearLayout01=0x7f060000;
         public static final int address=0x7f060010;
+        public static final int buttonContinue=0x7f060014;
         public static final int buttonSearch=0x7f06000e;
         public static final int checkBoxPhoto=0x7f06000d;
         public static final int gallery=0x7f060005;
@@ -51,6 +54,7 @@ public final class R {
         public static final int textViewCity=0x7f060007;
         public static final int textViewPrice=0x7f060009;
         public static final int textViewSize=0x7f06000b;
+        public static final int textViewSplash=0x7f060013;
         public static final int tvChild=0x7f060001;
         public static final int tvGroup=0x7f060002;
     }
@@ -96,6 +100,8 @@ public final class R {
         public static final int select_action=0x7f05000f;
         public static final int show_on_map=0x7f05000e;
         public static final int size=0x7f050003;
+        public static final int splash=0x7f05001b;
+        public static final int text_continue=0x7f05001c;
         public static final int view_sauna=0x7f050011;
     }
     public static final class styleable {

@@ -27,11 +27,9 @@ public class SaunaTabActivity extends TabActivity {
 	
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);	  
-	    setContentView(R.layout.sauna_tabs);
-	    
+	    setContentView(R.layout.sauna_tabs);	    
 	    Bundle extras = getIntent().getExtras(); 
-  		saunaId = extras.getString(SAUNA_ID_KEY);
-  		
+  		saunaId = extras.getString(SAUNA_ID_KEY);  		
 		initUI();
 	}
 	

@@ -46,9 +46,7 @@ public class SaunaMapActivity extends MapActivity {
   		     public void run() {
   		    	new DownloadWebpageText().execute(url);
   		    }
-  		}); 
-  		
-	    
+  		});   		    
 	}	  
 	
 	private void initUI() {
@@ -121,10 +119,8 @@ public class SaunaMapActivity extends MapActivity {
 				try {	
 					sauna = new Sauna(result.getString("id"), result.getString("name"), result.getString("phone_number1"), result.getString("full_address"));
 					initUI();      
-				} catch (JSONException e) {
-					//TODO
+				} catch (JSONException e) {					
 				}   	 			 		
-		    }
-		    
+		    }		    
 	    } 		
 }

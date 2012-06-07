@@ -9,10 +9,13 @@ import com.gotosauna.util.GlobalStore;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -47,17 +50,20 @@ public class CityListActivity extends ListActivity  {
         adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.city_item, listItems);
 		setListAdapter(adapter); 
 		
-	  		ListView lv = getListView();
-			lv.setTextFilterEnabled(true);		  			
-			lv.setOnItemClickListener(new OnItemClickListener() {
-				public void onItemClick(AdapterView<?> arg0, View view, int arg2, long arg3) {
-					selectedCity = cities.get((String)((TextView) view).getText());  					
-					String url = prepareUrl();
-					Intent intent = new Intent(getApplicationContext(), SaunaListActivity.class);
-					intent.putExtra(URL_KEY, url);
-					startActivityForResult(intent, ACTIVITY_SHOW);                    
-				}
-			});    	    
+  		ListView lv = getListView();
+		lv.setTextFilterEnabled(true);		  			
+		lv.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> arg0, View view, int arg2, long arg3) {
+				selectedCity = cities.get((String)((TextView) view).getText());  					
+				String url = prepareUrl();
+				Intent intent = new Intent(getApplicationContext(), SaunaListActivity.class);
+				intent.putExtra(URL_KEY, url);
+				startActivityForResult(intent, ACTIVITY_SHOW);                    
+			}
+		}); 
+
+  		EditText filterText = (EditText) findViewById(R.building_list.search_box);
+  	    filterText.addTextChangedListener(filterTextWatcher);		
 	}
 	    
     public String prepareUrl(){	    		
@@ -65,4 +71,17 @@ public class CityListActivity extends ListActivity  {
     	sb.append(selectedCity.getId());    	      
     	return sb.toString();
     }   
+    
+    private TextWatcher filterTextWatcher = new TextWatcher() {
+
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (adapter != null) {
+            	adapter.getFilter().filter(s);	
+            }        	
+        }
+
+		public void afterTextChanged(Editable arg0) {}
+    };    
 }

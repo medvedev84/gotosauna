@@ -1,8 +1,6 @@
 package com.gotosauna.activity.search;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-
 import com.gotosauna.R;
 import com.gotosauna.activity.list.SaunaListActivity;
 import com.gotosauna.core.City;

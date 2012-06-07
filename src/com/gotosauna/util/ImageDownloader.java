@@ -221,8 +221,7 @@ public class ImageDownloader {
             }
         } catch (Exception e) {
             // Could provide a more explicit error message for IOException or IllegalStateException
-            getRequest.abort();
-            Log.w("ImageDownloader", "Error while retrieving bitmap from " + url + e.toString());
+            getRequest.abort();            
         } finally {
             if (client != null) {
                 //client.close();

@@ -9,7 +9,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.gotosauna.R;
-import com.gotosauna.SplashActivity;
 import com.gotosauna.util.ImageDownloader;
 import com.gotosauna.util.JSONDownloader;
 
@@ -18,7 +17,6 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -27,8 +25,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class SaunaPhotosActivity extends Activity {
-	private static final String URL_KEY="url";
-	private static final String DEBUG_TAG = "GoToSauna";
+	private static final String URL_KEY="url";	
 	ImageDownloader downloader;
 	
     @Override    
@@ -106,8 +103,7 @@ public class SaunaPhotosActivity extends Activity {
                     TextView header = (TextView) findViewById(R.id.gallery_header);
                 	header.setText(getResources().getString(R.string.no_data));
                 }
-			} catch (JSONException e) {
-				Log.d(DEBUG_TAG, "JSON failed: " + e.getMessage());
+			} catch (JSONException e) {				
 			}   	  			
 	    }
     }     

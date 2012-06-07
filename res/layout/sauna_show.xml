@@ -16,12 +16,32 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dip"/>
-
-    <TextView
-        android:id="@+id/phone"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dip"/>
+        
+    <RelativeLayout 
+    	xmlns:android="http://schemas.android.com/apk/res/android"
+    	android:layout_height="wrap_content" 
+    	android:layout_width="fill_parent"
+    	android:layout_marginTop="10dip"
+    	>
+    	
+    	<Button
+        	android:id="@+id/buttonSearch"        
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:background="@drawable/ic_button_call"
+			android:layout_marginRight="10dp" 	              	
+        	android:layout_gravity="center"
+        	android:onClick="onButtonClicked"
+        	 />
+    	            
+	    <TextView
+	        android:id="@+id/phone"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_toRightOf="@id/buttonSearch"
+	        />
+	        
+    </RelativeLayout>
         
     <ExpandableListView 
         android:id="@+id/sauna_items" 

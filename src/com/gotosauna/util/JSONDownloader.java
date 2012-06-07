@@ -11,10 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.Log;
-
 public class JSONDownloader {
-	private static final String DEBUG_TAG = "GoToSauna";	
 	
    public static Object downloadUrl(String myurl, boolean isArray) throws IOException {
 	    InputStream is = null;		        
@@ -29,8 +26,7 @@ public class JSONDownloader {
 	        conn.getResponseCode();
 	        is = conn.getInputStream();	        
 	        return isArray ? getJSONArray(is): getJSONObject(is);
-	    } catch (JSONException ex){
-	    	 Log.d(DEBUG_TAG, "JSON failed: " + ex.getMessage());
+	    } catch (JSONException ex){	    	 
 	    } finally {
 	        if (is != null) {
 	            is.close();
