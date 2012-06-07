@@ -7,7 +7,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.gotosauna.GotosaunaActivity;
 import com.gotosauna.R;
 import com.gotosauna.activity.map.SaunaMapActivity;
 import com.gotosauna.activity.photo.SaunaPhotosActivity;
@@ -30,7 +29,6 @@ public class SaunaShowActivity extends Activity  {
 	private static final String DEBUG_TAG = "GoToSauna";
 	private static final int ACTIVITY_PHOTOS=2;
 	private static final String PHOTOS_SAUNAS_URL = "http://go-to-sauna.ru/sauna_photos/";
-	
 	private Sauna sauna;
 	
 	@Override
@@ -47,7 +45,7 @@ public class SaunaShowActivity extends Activity  {
   		    }
   		});  			
 	}
-	
+    
     public String prepareUrl(){    	
     	StringBuffer sb = new StringBuffer(PHOTOS_SAUNAS_URL);
     	sb.append(sauna.getId());
@@ -93,15 +91,7 @@ public class SaunaShowActivity extends Activity  {
                 JSONArray array = result.getJSONArray("sauna_items");				
                 ArrayList<String> groups = new ArrayList<String>();
                 ArrayList<ArrayList<String>> children = new ArrayList<ArrayList<String>>();
-                                
-                // Add "Photo" row
-                groups.add(getResources().getString(R.string.photo_gallery));
-                children.add(new ArrayList<String>());
-                
-                // Add "Map" row
-                groups.add(getResources().getString(R.string.show_on_map));
-                children.add(new ArrayList<String>());                
-                
+                                           
                 // Add "Sauna items" rows
                 for (int i = 0; i < array.length(); i++) {
                     JSONObject jo = (JSONObject) array.get(i);
@@ -124,6 +114,7 @@ public class SaunaShowActivity extends Activity  {
 	    	ExpandableListView listView = (ExpandableListView) findViewById(R.id.sauna_items);
 	    	listView.setGroupIndicator(null);
 	    	
+	    	/*
 	        listView.setOnGroupClickListener(new OnGroupClickListener()
 	        {
 				public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
@@ -140,9 +131,11 @@ public class SaunaShowActivity extends Activity  {
 					return false;
 				}	            	     
 	        });
+	         */
 	        
 	        ExpandableListAdapter adapter = new ExpandableListAdapter(getApplicationContext(), groups, children);
-	        listView.setAdapter(adapter);	    	    
+	        listView.setAdapter(adapter);	
+	        listView.expandGroup(0);
 	    }   
     } 	
 }

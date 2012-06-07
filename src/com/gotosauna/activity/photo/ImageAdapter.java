@@ -18,11 +18,12 @@ public class ImageAdapter extends BaseAdapter {
     private int itemBackground;
     ArrayList<String> items;
     ImageDownloader downloader;
-
+      
     public ImageAdapter(Context c, ArrayList<String> items, ImageDownloader downloader) {
     	mContext = c;
     	this.items = items;
     	this.downloader = downloader;
+    	
         //---setting the style---
         TypedArray a = mContext.obtainStyledAttributes(R.styleable.Gallery1);
         itemBackground = a.getResourceId(R.styleable.Gallery1_android_galleryItemBackground, 0);
@@ -49,7 +50,6 @@ public class ImageAdapter extends BaseAdapter {
         imageView.setBackgroundResource(itemBackground);
         downloader.download(url, imageView);        
         return imageView;
-
     }
 
 }

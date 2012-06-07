@@ -53,9 +53,9 @@ public class CityListActivity extends ListActivity  {
 				public void onItemClick(AdapterView<?> arg0, View view, int arg2, long arg3) {
 					selectedCity = cities.get((String)((TextView) view).getText());  					
 					String url = prepareUrl();
-                Intent intent = new Intent(getApplicationContext(), SaunaListActivity.class);
-                intent.putExtra(URL_KEY, url);
-                startActivityForResult(intent, ACTIVITY_SHOW);                    
+					Intent intent = new Intent(getApplicationContext(), SaunaListActivity.class);
+					intent.putExtra(URL_KEY, url);
+					startActivityForResult(intent, ACTIVITY_SHOW);                    
 				}
 			});    	    
 	}

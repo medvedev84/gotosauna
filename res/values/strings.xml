@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>   
-    <string name="app_name">Gotosauna</string>
+    <string name="app_name">Сауны и бани</string>
     <string name="city">Город:</string>
 	<string name="price">Цена:</string>
 	<string name="size">Вместимость:</string>
@@ -12,15 +12,19 @@
 	<string name="rub_per_hour">руб./час</string>	
 	<string name="persons">чел.</string>		
 	<string name="filter_by_name">поиск по названию</string>	
-	<string name="photo_gallery">Фотогаллерея</string>	
-	<string name="show_on_map">Показать на карте</string>	
+	<string name="description">Описание</string>	
+	<string name="photo_gallery">Фото</string>	
+	<string name="show_on_map">На карте</string>	
 	<string name="select_action">Выберите действие</string>	
 	<string name="call_to_sauna">Позвонить в сауну</string>	
 	<string name="view_sauna">Посмотреть информацию</string>	
-	<string name="menu_search">Поиск саун</string>	
-	<string name="menu_cities">Сауны по городам</string>
+	<string name="menu_search">Поиск</string>	
+	<string name="menu_cities">Города</string>
 	<string name="menu_map">Сауны на карте</string>
 	<string name="menu_about">О программе</string>
+	<string name="menu_settings">Настройки</string>
 	<string name="application_error">Ошибка приложения</string>
 	<string name="could_not_find_location">Не удалось определить местоположение</string>
+	<string name="loading_data">Загрузка данных</string>
+	<string name="please_wait">Пожалуйста, подождите...</string>
 </resources>

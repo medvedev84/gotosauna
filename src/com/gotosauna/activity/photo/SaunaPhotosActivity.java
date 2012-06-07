@@ -9,10 +9,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.gotosauna.R;
+import com.gotosauna.SplashActivity;
 import com.gotosauna.util.ImageDownloader;
 import com.gotosauna.util.JSONDownloader;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -47,7 +50,15 @@ public class SaunaPhotosActivity extends Activity {
     }	
     
     private class DownloadWebpageText extends AsyncTask<String, Integer, JSONObject> {
-		@Override
+    	Dialog progress;
+    	
+        @Override
+        protected void onPreExecute() {
+        	progress = ProgressDialog.show(SaunaPhotosActivity.this, getResources().getString(R.string.loading_data), getResources().getString(R.string.please_wait));             
+            super.onPreExecute();
+        }
+        
+    	@Override
 		protected JSONObject doInBackground(String... urls) {
             String url = urls[0];
 			try {
@@ -63,8 +74,9 @@ public class SaunaPhotosActivity extends Activity {
 		 }
 	     
 		@Override
-		protected void onPostExecute(JSONObject result) {
-			fillListView(result);
+		protected void onPostExecute(JSONObject result) {	
+			fillListView(result);			
+			progress.dismiss();
 		}		
 		
 	    private void fillListView(JSONObject result){

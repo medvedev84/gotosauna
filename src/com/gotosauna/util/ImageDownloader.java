@@ -64,11 +64,11 @@ public class ImageDownloader {
 	    		  BitmapDownloaderTask task = new BitmapDownloaderTask(imageView);
 	    		  DownloadedDrawable downloadedDrawable = new DownloadedDrawable(task);
 	    		  imageView.setImageDrawable(downloadedDrawable);
-	    		  task.execute(url);
+	    		  task.execute(url);	    		  
 	    	  }else{
 	    		  //Yes? set the image
 	    		  imageView.setImageBitmap(bitmap);
-	    	  }
+	    	  }	    	 	    	
 	     }
 	}
 	
@@ -165,22 +165,15 @@ public class ImageDownloader {
                 BitmapDownloaderTask bitmapDownloaderTask = getBitmapDownloaderTask(imageView);
                 // Change bitmap only if this process is still associated with it
                 if (this == bitmapDownloaderTask) {
-                    imageView.setImageBitmap(bitmap);
-                    
-                    //cache the image
-                    
-                    
+                    imageView.setImageBitmap(bitmap);                    
+                    //cache the image                                        
                     String filename = String.valueOf(url.hashCode());
-       	    	 	File f = new File(getCacheDirectory(imageView.getContext()), filename);
-       	    	 	
-       	    	 	imageCache.put(f.getPath(), bitmap);
-       	    	 	
+       	    	 	File f = new File(getCacheDirectory(imageView.getContext()), filename);       	    	 	
+       	    	 	imageCache.put(f.getPath(), bitmap);       	    	 	
                     writeFile(bitmap, f);
                 }
             }
-        }
-        
-        
+        }                
     }
     
     static class DownloadedDrawable extends ColorDrawable {

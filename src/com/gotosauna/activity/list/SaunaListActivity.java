@@ -9,11 +9,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.gotosauna.R;
+import com.gotosauna.activity.photo.SaunaPhotosActivity;
 import com.gotosauna.activity.show.SaunaShowActivity;
+import com.gotosauna.activity.show.SaunaTabActivity;
 import com.gotosauna.core.Sauna;
 import com.gotosauna.util.JSONDownloader;
 
+import android.app.Dialog;
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -34,6 +38,7 @@ import android.widget.TextView;
 
 public class SaunaListActivity extends ListActivity  {
 	private static final String URL_KEY = "url";
+	private static final String SAUNA_ID_KEY = "saunaId";
 	private static final String DEBUG_TAG = "GoToSauna";	
 	private static final int ACTIVITY_SHOW = 1;
 	private static final String SHOW_SAUNA_URL = "http://go-to-sauna.ru/saunas/";
@@ -112,7 +117,15 @@ public class SaunaListActivity extends ListActivity  {
     }
     
     private class DownloadWebpageText extends AsyncTask<String, Integer, JSONArray> {
-		@Override
+    	Dialog progress;
+    	
+        @Override
+        protected void onPreExecute() {
+        	progress = ProgressDialog.show(SaunaListActivity.this, getResources().getString(R.string.loading_data), getResources().getString(R.string.please_wait));                         
+            super.onPreExecute();
+        }
+        
+    	@Override
 		protected JSONArray doInBackground(String... urls) {
             String url = urls[0];
 			try {
@@ -130,6 +143,8 @@ public class SaunaListActivity extends ListActivity  {
 		@Override
 		protected void onPostExecute(JSONArray result) {
 			fillListView(result);
+
+			progress.dismiss();
 		}		
 		
 	    private void fillListView(JSONArray result){
@@ -151,10 +166,9 @@ public class SaunaListActivity extends ListActivity  {
   			
   			lv.setOnItemClickListener(new OnItemClickListener() {
   				public void onItemClick(AdapterView<?> arg0, View view, int arg2, long arg3) {
-  					selectedSauna = saunas.get((String)((TextView) view).getText());  					
-  					String url = prepareUrl();
-                    Intent intent = new Intent(getApplicationContext(), SaunaShowActivity.class);
-                    intent.putExtra(URL_KEY, url);
+  					selectedSauna = saunas.get((String)((TextView) view).getText());  					  					              
+  					Intent intent = new Intent(getApplicationContext(), SaunaTabActivity.class);
+                    intent.putExtra(SAUNA_ID_KEY, selectedSauna.getId());
                     startActivityForResult(intent, ACTIVITY_SHOW);                    
   				}
   			});
