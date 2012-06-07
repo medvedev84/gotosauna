@@ -29,4 +29,5 @@
 	<string name="please_wait">Пожалуйста, подождите...</string>
 	<string name="splash">Вся информация предоставлена сайтом www.go-to-sauna.ru. </string>
 	<string name="text_continue">Продолжить</string>
+	<string name="no_network">Не удается установить соединение. Проверьте настройки подключения к сети Интернет.</string>
 </resources>

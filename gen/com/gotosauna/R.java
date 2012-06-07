@@ -90,6 +90,7 @@ public final class R {
         public static final int menu_search=0x7f050012;
         public static final int menu_settings=0x7f050016;
         public static final int no_data=0x7f050006;
+        public static final int no_network=0x7f05001d;
         public static final int persons=0x7f05000a;
         public static final int photo=0x7f050004;
         public static final int photo_gallery=0x7f05000d;
