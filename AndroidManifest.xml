@@ -22,13 +22,32 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.list.SaunaListActivity" android:screenOrientation="user"></activity>
-        <activity android:name=".activity.list.CityListActivity" android:screenOrientation="user"></activity>
+        <activity 
+        	android:name=".activity.list.SaunaListActivity" 
+        	android:screenOrientation="user"
+        	android:configChanges="orientation|keyboardHidden" >
+        </activity>
+        <activity 
+        	android:name=".activity.list.CityListActivity" 
+        	android:screenOrientation="user"
+        	android:configChanges="orientation|keyboardHidden" >
+        </activity>
         <activity android:name=".activity.search.SaunaSearchActivity" android:screenOrientation="user"></activity>
         <activity android:name=".activity.show.SaunaShowActivity" android:screenOrientation="user"></activity>    
-        <activity android:name=".activity.photo.SaunaPhotosActivity" android:screenOrientation="user"></activity>              
-        <activity android:name=".activity.map.SaunaMapActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>  
-        <activity android:name=".activity.show.SaunaTabActivity" ></activity>
+        <activity 
+        	android:name=".activity.photo.SaunaPhotosActivity" 
+        	android:screenOrientation="user"
+        	android:configChanges="orientation|keyboardHidden" >
+        </activity>              
+        <activity 
+        	android:name=".activity.map.SaunaMapActivity" 
+        	android:theme="@android:style/Theme.NoTitleBar"
+        	android:configChanges="orientation|keyboardHidden">
+        </activity>  
+        <activity 
+        	android:name=".activity.show.SaunaTabActivity" 
+        	android:configChanges="orientation|keyboardHidden">
+        </activity>
         <activity android:name=".MainTabActivity" ></activity>
         <uses-library android:name="com.google.android.maps" />
     </application>

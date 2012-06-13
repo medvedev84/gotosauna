@@ -26,6 +26,8 @@ import android.widget.TextView;
 
 public class SaunaPhotosActivity extends Activity {
 	private static final String URL_KEY="url";	
+	private static final int MAX_PHOTO_ARRAY_SIZE = 5;
+	
 	ImageDownloader downloader;
 	
     @Override    
@@ -80,8 +82,10 @@ public class SaunaPhotosActivity extends Activity {
 			try {										
                 JSONArray array = result.getJSONArray("sauna_photos");		
                 
-                final ArrayList<String> urls = new ArrayList<String>();                               
-                for (int i = 0; i < array.length(); i++) {
+                final ArrayList<String> urls = new ArrayList<String>();
+                int size = Math.min(array.length(), MAX_PHOTO_ARRAY_SIZE);
+                
+                for (int i = 0; i < size; i++) {
                     JSONObject jo = (JSONObject) array.get(i);
                     urls.add(jo.getString("photo_url"));
                 }
