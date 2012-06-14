@@ -2,32 +2,24 @@ package com.gotosauna.activity.photo;
 
 import java.util.ArrayList;
 
-import com.gotosauna.R;
 import com.gotosauna.util.ImageDownloader;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Gallery;
+import android.widget.GridView;
 import android.widget.ImageView;
 
 public class ImageAdapter extends BaseAdapter {
     private Context mContext;
-    private int itemBackground;
     ArrayList<String> items;
     ImageDownloader downloader;
       
     public ImageAdapter(Context c, ArrayList<String> items, ImageDownloader downloader) {
     	mContext = c;
     	this.items = items;
-    	this.downloader = downloader;
-    	
-        //---setting the style---
-        TypedArray a = mContext.obtainStyledAttributes(R.styleable.Gallery1);
-        itemBackground = a.getResourceId(R.styleable.Gallery1_android_galleryItemBackground, 0);
-        a.recycle();   
+    	this.downloader = downloader;    	
     }
 
     public int getCount() {
@@ -44,10 +36,10 @@ public class ImageAdapter extends BaseAdapter {
 
     public View getView(int position, View convertView, ViewGroup parent) {
 		String url = items.get(position);        
-        ImageView imageView = new ImageView(mContext);
+        ImageView imageView = new ImageView(mContext);               
+        imageView.setLayoutParams(new GridView.LayoutParams(200, 200));
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-        imageView.setLayoutParams(new Gallery.LayoutParams(150, 120));
-        imageView.setBackgroundResource(itemBackground);
+        imageView.setPadding(8, 8, 8, 8);        
         downloader.download(url, imageView);        
         return imageView;
     }

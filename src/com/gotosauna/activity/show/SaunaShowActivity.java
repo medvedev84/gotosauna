@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
@@ -83,9 +84,9 @@ public class SaunaShowActivity extends Activity  {
                 
                 TextView address = (TextView) findViewById(R.id.address);
                 address.setText(sauna.getAddress());
-                
-                TextView phone = (TextView) findViewById(R.id.phone);
-                phone.setText(sauna.getPhoneNumber());  
+
+                Button button = (Button) findViewById(R.id.buttonCall);
+                button.setText(sauna.getPhoneNumber());
                 
                 JSONArray array = result.getJSONArray("sauna_items");				
                 ArrayList<String> groups = new ArrayList<String>();

@@ -1,6 +1,5 @@
 package com.gotosauna.activity.photo;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -17,16 +16,12 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Gallery;
-import android.widget.ImageView;
+import android.widget.GridView;
 import android.widget.TextView;
 
 public class SaunaPhotosActivity extends Activity {
 	private static final String URL_KEY="url";	
-	private static final int MAX_PHOTO_ARRAY_SIZE = 5;
+	private static final int MAX_PHOTO_ARRAY_SIZE = 6;
 	
 	ImageDownloader downloader;
 	
@@ -34,7 +29,7 @@ public class SaunaPhotosActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) 
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sauna_photos_gallery);
+        setContentView(R.layout.sauna_photos_grid);
         
   		Bundle extras = getIntent().getExtras(); 
   		final String url = extras.getString(URL_KEY);
@@ -87,22 +82,13 @@ public class SaunaPhotosActivity extends Activity {
                 
                 for (int i = 0; i < size; i++) {
                     JSONObject jo = (JSONObject) array.get(i);
-                    urls.add(jo.getString("photo_url"));
+                    urls.add(jo.getString("photo_url_thumb"));
                 }
                            
-                if (urls.size() > 0) {              
-                    Gallery gallery = (Gallery) findViewById(R.id.gallery);                    
-                    ImageAdapter ia = new ImageAdapter(SaunaPhotosActivity.this, urls, downloader);
-                    gallery.setAdapter(ia);        
-                    gallery.setOnItemClickListener(new OnItemClickListener() 
-                    {
-                        public void onItemClick(AdapterView parent, View v, int position, long id) 
-                        {   
-                        	ImageView imageView = (ImageView) findViewById(R.id.preview_image);                        	
-                        	File f = new File(imageView.getContext().getCacheDir(), String.valueOf(urls.get(position).hashCode()));              	            
-                            imageView.setImageBitmap(downloader.imageCache.get(f.getPath()));                                   	    	 	
-                        }
-                    });  
+                if (urls.size() > 0) {                                 
+                	ImageAdapter ia = new ImageAdapter(SaunaPhotosActivity.this, urls, downloader);                     
+                    GridView gridview = (GridView) findViewById(R.id.gridview);
+                    gridview.setAdapter(ia);                                      
                 } else {                   
                     TextView header = (TextView) findViewById(R.id.gallery_header);
                 	header.setText(getResources().getString(R.string.no_data));

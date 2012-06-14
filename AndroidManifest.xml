@@ -32,12 +32,18 @@
         	android:screenOrientation="user"
         	android:configChanges="orientation|keyboardHidden" >
         </activity>
-        <activity android:name=".activity.search.SaunaSearchActivity" android:screenOrientation="user"></activity>
-        <activity android:name=".activity.show.SaunaShowActivity" android:screenOrientation="user"></activity>    
+        <activity 
+        	android:name=".activity.search.SaunaSearchActivity" 
+        	android:screenOrientation="user">
+        </activity>
+        <activity 
+        	android:name=".activity.show.SaunaShowActivity" 
+        	android:screenOrientation="user">
+        </activity>    
         <activity 
         	android:name=".activity.photo.SaunaPhotosActivity" 
         	android:screenOrientation="user"
-        	android:configChanges="orientation|keyboardHidden" >
+        	android:configChanges="orientation|keyboardHidden">
         </activity>              
         <activity 
         	android:name=".activity.map.SaunaMapActivity" 
