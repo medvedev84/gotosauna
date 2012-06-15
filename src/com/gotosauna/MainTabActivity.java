@@ -5,8 +5,11 @@ import com.gotosauna.activity.search.SaunaSearchActivity;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.TabHost;
+import android.widget.TabHost.OnTabChangeListener;
+import android.widget.TextView;
 
 public class MainTabActivity extends TabActivity {
 	
@@ -14,6 +17,14 @@ public class MainTabActivity extends TabActivity {
 	    super.onCreate(savedInstanceState);	  
 	    setContentView(R.layout.main_tabs);
 	    initUI();
+	    
+	    final TabHost tabHost = getTabHost();	  
+	    changeColor(tabHost);	               
+        tabHost.setOnTabChangedListener(new OnTabChangeListener(){
+        	public void onTabChanged(String tabId) {
+        		changeColor(tabHost);        		     	   
+        	 }
+        });        
 	}
 	
 	public void initUI() {	   
@@ -34,5 +45,15 @@ public class MainTabActivity extends TabActivity {
 	    tabHost.addTab(spec);
 	    
 	    tabHost.setCurrentTab(0);		    	   
-	}	 	
+	}	 
+	
+	private void changeColor(TabHost tabHost){
+	    for(int i=0;i<tabHost.getTabWidget().getChildCount();i++) 
+	    { 
+            TextView tv = (TextView) tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title); //Unselected Tabs
+            tv.setTextColor(Color.parseColor("#ffffff"));
+	    } 		
+        TextView tv = (TextView) tabHost.getCurrentTabView().findViewById(android.R.id.title); //for Selected Tab
+        tv.setTextColor(Color.parseColor("#000000"));  		
+	}
 }

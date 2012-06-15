@@ -42,7 +42,7 @@ public class ImageDownloader {
 	     if (cancelPotentialDownload(url, imageView)) {
 	    	 
 	    	 //Caching code right here
-	    	 String filename = String.valueOf(url.hashCode());
+	    	 String filename = String.valueOf(url.hashCode()) + ".png";
 	    	 File f = new File(getCacheDirectory(imageView.getContext()), filename);
 
 	    	  // Is the bitmap in our memory cache?
@@ -167,7 +167,7 @@ public class ImageDownloader {
                 if (this == bitmapDownloaderTask) {
                     imageView.setImageBitmap(bitmap);                    
                     //cache the image                                        
-                    String filename = String.valueOf(url.hashCode());
+                    String filename = String.valueOf(url.hashCode()) + ".png";
        	    	 	File f = new File(getCacheDirectory(imageView.getContext()), filename);       	    	 	
        	    	 	imageCache.put(f.getPath(), bitmap);       	    	 	
                     writeFile(bitmap, f);

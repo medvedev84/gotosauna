@@ -10,8 +10,11 @@ import com.gotosauna.util.GlobalStore;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.TabHost;
+import android.widget.TextView;
+import android.widget.TabHost.OnTabChangeListener;
 
 public class SaunaTabActivity extends TabActivity {
 	
@@ -31,6 +34,24 @@ public class SaunaTabActivity extends TabActivity {
 	    Bundle extras = getIntent().getExtras(); 
   		saunaId = extras.getString(SAUNA_ID_KEY);  		
 		initUI();
+		
+	    final TabHost tabHost = getTabHost();	  
+	    changeColor(tabHost);	               
+        tabHost.setOnTabChangedListener(new OnTabChangeListener(){
+        	public void onTabChanged(String tabId) {
+        		changeColor(tabHost);        		     	   
+        	 }
+        });  		
+	}
+	
+	private void changeColor(TabHost tabHost){
+	    for(int i=0;i<tabHost.getTabWidget().getChildCount();i++) 
+	    { 
+            TextView tv = (TextView) tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title); //Unselected Tabs
+            tv.setTextColor(Color.parseColor("#ffffff"));
+	    } 		
+        TextView tv = (TextView) tabHost.getCurrentTabView().findViewById(android.R.id.title); //for Selected Tab
+        tv.setTextColor(Color.parseColor("#000000"));  		
 	}
 	
 	public void initUI() {	 

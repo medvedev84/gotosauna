@@ -102,27 +102,18 @@ public class SaunaPhotosActivity extends Activity {
                     gridview.setAdapter(ia);                                   
                     
                     gridview.setOnItemClickListener(new OnItemClickListener() {            
-						public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-							 //Toast.makeText(SaunaPhotosActivity.this, urls.get(position), Toast.LENGTH_SHORT).show();
-							
-							 Intent intent = new Intent(Intent.ACTION_VIEW);							
-							 
+						public void onItemClick(AdapterView<?> parent, View v, int position, long id) {		
 							 String filename = String.valueOf(urls.get(position).hashCode()) + ".png";
-							 File f = new File(ImageDownloader.getCacheDirectory(v.getContext()), filename);				 
-							
-							 Uri uri = Uri.fromFile(f);
-									 
-							 Toast.makeText(SaunaPhotosActivity.this, f.getPath(), Toast.LENGTH_SHORT).show();
-							 
-							 intent.setDataAndType(uri, "image/*");
-							 
-							// intent.setDataAndType(Uri.fromFile(new File(filename)), "image/*");
-							 //intent.setDataAndType(Uri.parse("file://" + f.getPath()) , "image/*");
-							// intent.setDataAndType(Uri.parse(urls.get(position)) , "image/*");
-							// startActivity(intent);
-							 
-							  // Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(urls.get(position))); 
-						        startActivity(intent); 
+							 File f = new File(ImageDownloader.getCacheDirectory(v.getContext()), filename);				 						
+							 if (f.exists()) {
+								 Uri uri = Uri.fromFile(f);
+								 Intent intent = new Intent(Intent.ACTION_VIEW);
+								 Uri hacked_uri = Uri.parse("file://" + uri.getPath());								
+								 intent.setDataAndType(hacked_uri, "image/*");
+								 startActivity(intent);  
+							 } else {
+								 Toast.makeText(SaunaPhotosActivity.this, "No file", Toast.LENGTH_SHORT).show();									
+							 }
 						}
                     });                    
                 } else {                   
