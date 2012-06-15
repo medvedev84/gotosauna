@@ -102,7 +102,7 @@ public class ImageDownloader {
  
 	//our caching functions
 	// Find the dir to save cached images
-	private static File getCacheDirectory(Context context){
+	public static File getCacheDirectory(Context context){
 		String sdState = android.os.Environment.getExternalStorageState();
 		File cacheDir;
     

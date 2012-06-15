@@ -7,7 +7,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.gotosauna.activity.list.SaunaListActivity;
 import com.gotosauna.core.City;
 import com.gotosauna.util.GlobalStore;
 import com.gotosauna.util.JSONDownloader;
@@ -21,6 +20,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -35,12 +35,15 @@ public class SplashActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
-        
+                
+        Display display = getWindowManager().getDefaultDisplay();  
+    	globalStore = ((GlobalStore) getApplicationContext());       	  		 		
+  		globalStore.setScreenWidth(display.getWidth());
+  		globalStore.setScreenHeight(display.getHeight());
+  		
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {                    	                    	                    	                    	
-            
-        	globalStore = ((GlobalStore) getApplicationContext());    	
+        if (networkInfo != null && networkInfo.isConnected()) {                    	                    	                    	                    	                    	
             cities = globalStore.getCities();
             
             if (cities == null || cities.size() == 0) {

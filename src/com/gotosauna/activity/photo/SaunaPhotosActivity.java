@@ -1,5 +1,6 @@
 package com.gotosauna.activity.photo;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -8,22 +9,30 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.gotosauna.R;
+import com.gotosauna.util.GlobalStore;
 import com.gotosauna.util.ImageDownloader;
 import com.gotosauna.util.JSONDownloader;
 
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SaunaPhotosActivity extends Activity {
 	private static final String URL_KEY="url";	
 	private static final int MAX_PHOTO_ARRAY_SIZE = 6;
 	
-	ImageDownloader downloader;
+	private int imageWidth = 100;
+	private int imageHeight = 100;
 	
     @Override    
     public void onCreate(Bundle savedInstanceState) 
@@ -33,9 +42,11 @@ public class SaunaPhotosActivity extends Activity {
         
   		Bundle extras = getIntent().getExtras(); 
   		final String url = extras.getString(URL_KEY);
-  		        
-        this.downloader = new ImageDownloader();
-        
+
+  		GlobalStore globalStore = ((GlobalStore) getApplicationContext());       	  
+  		imageWidth = globalStore.getScreenWidth() / 2 - 10;
+  		imageHeight = imageWidth;
+  		
   		runOnUiThread(new Runnable() {
  		     public void run() {
  		    	new DownloadWebpageText().execute(url);
@@ -85,10 +96,35 @@ public class SaunaPhotosActivity extends Activity {
                     urls.add(jo.getString("photo_url_thumb"));
                 }
                            
-                if (urls.size() > 0) {                                 
-                	ImageAdapter ia = new ImageAdapter(SaunaPhotosActivity.this, urls, downloader);                     
+                if (urls.size() > 0) {     
+                	ImageAdapter ia = new ImageAdapter(SaunaPhotosActivity.this, urls, new ImageDownloader(), imageWidth, imageHeight);                     
                     GridView gridview = (GridView) findViewById(R.id.gridview);
-                    gridview.setAdapter(ia);                                      
+                    gridview.setAdapter(ia);                                   
+                    
+                    gridview.setOnItemClickListener(new OnItemClickListener() {            
+						public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+							 //Toast.makeText(SaunaPhotosActivity.this, urls.get(position), Toast.LENGTH_SHORT).show();
+							
+							 Intent intent = new Intent(Intent.ACTION_VIEW);							
+							 
+							 String filename = String.valueOf(urls.get(position).hashCode()) + ".png";
+							 File f = new File(ImageDownloader.getCacheDirectory(v.getContext()), filename);				 
+							
+							 Uri uri = Uri.fromFile(f);
+									 
+							 Toast.makeText(SaunaPhotosActivity.this, f.getPath(), Toast.LENGTH_SHORT).show();
+							 
+							 intent.setDataAndType(uri, "image/*");
+							 
+							// intent.setDataAndType(Uri.fromFile(new File(filename)), "image/*");
+							 //intent.setDataAndType(Uri.parse("file://" + f.getPath()) , "image/*");
+							// intent.setDataAndType(Uri.parse(urls.get(position)) , "image/*");
+							// startActivity(intent);
+							 
+							  // Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(urls.get(position))); 
+						        startActivity(intent); 
+						}
+                    });                    
                 } else {                   
                     TextView header = (TextView) findViewById(R.id.gallery_header);
                 	header.setText(getResources().getString(R.string.no_data));
