@@ -12,9 +12,10 @@
 	<string name="rub_per_hour">руб./час</string>	
 	<string name="persons">чел.</string>		
 	<string name="filter_by_name">поиск по названию</string>	
-	<string name="description">Описание</string>	
+	<string name="description">Главная</string>	
 	<string name="photo_gallery">Фото</string>	
-	<string name="show_on_map">На карте</string>	
+	<string name="view_sauna_items">Сауны</string>	
+	<string name="show_on_map">Карта</string>	
 	<string name="select_action">Выберите действие</string>	
 	<string name="call_to_sauna">Позвонить в сауну</string>	
 	<string name="view_sauna">Посмотреть информацию</string>	
@@ -29,5 +30,10 @@
 	<string name="please_wait">Пожалуйста, подождите...</string>
 	<string name="splash">Вся информация предоставлена сайтом www.go-to-sauna.ru. </string>
 	<string name="text_continue">Продолжить</string>
-	<string name="no_network">Не удается установить соединение. Проверьте настройки подключения к сети Интернет.</string>
+	<string name="error_no_network">Не удается установить соединение. Проверьте настройки подключения к сети Интернет.</string>
+	<string name="error_io">Ошибка получения данных</string>
+	<string name="error_json">Ошибка преобразования данных</string>
+	<string name="sauna_items">Сауны и бани</string>
+	<string name="more">Дополнительно</string>
+	
 </resources>

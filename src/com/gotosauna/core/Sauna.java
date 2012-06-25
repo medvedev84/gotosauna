@@ -1,11 +1,17 @@
 package com.gotosauna.core;
 
-public class Sauna {
+import java.io.Serializable;
+import java.util.ArrayList;
+
+@SuppressWarnings("serial")
+public class Sauna implements Serializable {
 	
 	private String id;
 	private String name;
 	private String phoneNumber;
 	private String address;
+	
+	private ArrayList<SaunaItem> items = new ArrayList<SaunaItem>();
 	
 	public Sauna(){}
 	
@@ -47,5 +53,13 @@ public class Sauna {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public ArrayList<SaunaItem> getItems() {
+		return items;
+	}
+
+	public void setItems(ArrayList<SaunaItem> items) {
+		this.items = items;
 	}
 }

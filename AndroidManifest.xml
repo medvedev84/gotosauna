@@ -41,6 +41,10 @@
         	android:screenOrientation="user">
         </activity>    
         <activity 
+        	android:name=".activity.show.SaunaItemsShowActivity" 
+        	android:screenOrientation="user">
+        </activity>                 
+        <activity 
         	android:name=".activity.photo.SaunaPhotosActivity" 
         	android:screenOrientation="user"
         	android:configChanges="orientation|keyboardHidden">

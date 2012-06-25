@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.gotosauna.core.Advertisement;
 import com.gotosauna.core.City;
 import com.gotosauna.util.GlobalStore;
 import com.gotosauna.util.JSONDownloader;
@@ -30,6 +31,7 @@ public class SplashActivity extends Activity {
 	GlobalStore globalStore;
 	ArrayList<City> cities;
 	private static final String GET_CITIES_URL = "http://go-to-sauna.ru/cities?json=true";
+	private static final String GET_ADVERTISEMENTS_URL = "http://go-to-sauna.ru/advertisements?json=true";
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,7 +52,7 @@ public class SplashActivity extends Activity {
             	cities = new ArrayList<City>();        	
             	runOnUiThread(new Runnable() {
 	   	 		    public void run() {
-	   	 		    	new DownloadWebpageText().execute(GET_CITIES_URL);
+	   	 		    	new DownloadWebpageText().execute(new String[] {GET_CITIES_URL, GET_ADVERTISEMENTS_URL});
 	   	 		    }
    	 			});              	            	    	  		         	 
             }        	
@@ -66,11 +68,11 @@ public class SplashActivity extends Activity {
             });
            
         } else {        	
-        	Toast.makeText(getApplicationContext(), getResources().getString(R.string.no_network), Toast.LENGTH_SHORT).show();
+        	Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_no_network), Toast.LENGTH_SHORT).show();
         }            
     }
     	
-    private class DownloadWebpageText extends AsyncTask<String, Integer, JSONArray> {
+    private class DownloadWebpageText extends AsyncTask<String, Integer, ArrayList<JSONArray>> {
     	Dialog progress;
     	
         @Override
@@ -80,10 +82,14 @@ public class SplashActivity extends Activity {
         }
         
     	@Override
-		protected JSONArray doInBackground(String... urls) {
-            String url = urls[0];
+		protected ArrayList<JSONArray> doInBackground(String... urls) {            
 			try {
-                 return (JSONArray) JSONDownloader.downloadUrl(url, true);
+			    ArrayList<JSONArray> array = new ArrayList<JSONArray>();
+				JSONArray cities = (JSONArray) JSONDownloader.downloadUrl(urls[0], true);
+				JSONArray advertisements = (JSONArray) JSONDownloader.downloadUrl(urls[1], true);
+                array.add(cities);
+                array.add(advertisements);
+                return array;
             } catch (IOException e) {
                 return null;
             }		
@@ -95,19 +101,28 @@ public class SplashActivity extends Activity {
 		 }
 	     
 		@Override
-		protected void onPostExecute(JSONArray result) {
+		protected void onPostExecute(ArrayList<JSONArray> result) {
 			processData(result);
 			progress.dismiss();
 		}		
 		
-	    private void processData(JSONArray result){
-			try {				
-                for (int i = 0; i < result.length(); i++) {
-                    JSONObject jo = (JSONObject) result.get(i);                                        
+	    private void processData(ArrayList<JSONArray> result){	    	
+	    	JSONArray citiesJSONArray = result.get(0);
+	    	JSONArray advertisementsJSONArray = result.get(1);
+	    	try {				
+                for (int i = 0; i < citiesJSONArray.length(); i++) {
+                    JSONObject jo = (JSONObject) citiesJSONArray.get(i);                                        
                     cities.add( new City(jo.getString("id"), jo.getString("name")));                                     
                 }				
                 globalStore.setCities(cities);   
-                				
+                	
+            	ArrayList<Advertisement> advertisements = new ArrayList<Advertisement>();
+                for (int i = 0; i < advertisementsJSONArray.length(); i++) {
+                    JSONObject jo = (JSONObject) advertisementsJSONArray.get(i);                                        
+                    advertisements.add( new Advertisement(jo.getString("city_id"), jo.getString("company_name"), jo.getString("description"), jo.getString("phone_number")));                                     
+                }				
+                globalStore.setAdvertisements(advertisements); 
+                
 				Intent intent = new Intent(getApplicationContext(), MainTabActivity.class);				
 				startActivity(intent);  
 			} catch (JSONException e) {

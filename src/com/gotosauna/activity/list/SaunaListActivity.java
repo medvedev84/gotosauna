@@ -12,6 +12,7 @@ import com.gotosauna.R;
 import com.gotosauna.activity.show.SaunaShowActivity;
 import com.gotosauna.activity.show.SaunaTabActivity;
 import com.gotosauna.core.Sauna;
+import com.gotosauna.core.SaunaItem;
 import com.gotosauna.util.JSONDownloader;
 
 import android.app.Dialog;
@@ -33,10 +34,10 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SaunaListActivity extends ListActivity  {
 	private static final String URL_KEY = "url";
-	private static final String SAUNA_ID_KEY = "saunaId";
 	private static final int ACTIVITY_SHOW = 1;
 	private static final String SHOW_SAUNA_URL = "http://go-to-sauna.ru/saunas/";
 	
@@ -73,7 +74,7 @@ public class SaunaListActivity extends ListActivity  {
     	selectedSauna = saunas.get((String) ((TextView)((AdapterView.AdapterContextMenuInfo) menuInfo).targetView).getText());    	    	
         menu.setHeaderTitle(getResources().getString(R.string.select_action));  
         menu.add(0, ITEM_CALL, 0, getResources().getString(R.string.call_to_sauna));  
-        menu.add(0, ITEM_VIEW, 0, getResources().getString(R.string.view_sauna));  
+        //menu.add(0, ITEM_VIEW, 0, getResources().getString(R.string.view_sauna));  
     }  	
     
     @Override  
@@ -159,15 +160,36 @@ public class SaunaListActivity extends ListActivity  {
   			
   			lv.setOnItemClickListener(new OnItemClickListener() {
   				public void onItemClick(AdapterView<?> arg0, View view, int arg2, long arg3) {
-  					selectedSauna = saunas.get((String)((TextView) view).getText());  					  					              
-  					Intent intent = new Intent(getApplicationContext(), SaunaTabActivity.class);
-                    intent.putExtra(SAUNA_ID_KEY, selectedSauna.getId());
-                    startActivityForResult(intent, ACTIVITY_SHOW);                    
+  					selectedSauna = saunas.get((String)((TextView) view).getText());  					  					                					  
+  					StringBuffer sb = new StringBuffer(SHOW_SAUNA_URL).append(selectedSauna.getId()).append("?json=true");
+  	                Intent intent = new Intent(getApplicationContext(), SaunaTabActivity.class);
+  	                intent.putExtra("Sauna", popualteSauna(selectedSauna, sb.toString()));
+  	                startActivityForResult(intent, ACTIVITY_SHOW);                    
   				}
   			});  			 
   			registerForContextMenu(lv);
-	    }	   
+	    }    
     } 	
+    
+    private Sauna popualteSauna(Sauna sauna, String url){		  					
+		try {					
+			JSONObject result = (JSONObject) JSONDownloader.downloadUrl(url, false);
+			sauna.setAddress(result.getString("full_address"));
+            JSONArray array = result.getJSONArray("sauna_items");				              
+            ArrayList<SaunaItem> sauna_items = new ArrayList<SaunaItem>();
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject jo = (JSONObject) array.get(i);
+                sauna_items.add(new SaunaItem(jo.getString("name"), jo.getString("description"), jo.getString("min_price"), jo.getString("capacity")));                                    
+            } 
+            sauna.setItems(sauna_items);						
+		} catch (IOException e) {
+		   	Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_io), Toast.LENGTH_SHORT).show();		     
+		} catch (JSONException e) {
+		   	Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_json), Toast.LENGTH_SHORT).show();
+		     
+		}      	
+    	return sauna;
+    }
     
     private TextWatcher filterTextWatcher = new TextWatcher() {
 

@@ -2,6 +2,7 @@ package com.gotosauna.util;
 
 import java.util.ArrayList;
 
+import com.gotosauna.core.Advertisement;
 import com.gotosauna.core.City;
 
 import android.app.Application;
@@ -9,6 +10,7 @@ import android.app.Application;
 public class GlobalStore extends Application {
 	  
 	private ArrayList<City> cities;
+	private ArrayList<Advertisement> advertisements;
 	private int screenWidth;
 	private int screenHeight;
 
@@ -34,5 +36,13 @@ public class GlobalStore extends Application {
 
 	public void setScreenHeight(int screenHeight) {
 		this.screenHeight = screenHeight;
+	}
+
+	public ArrayList<Advertisement> getAdvertisements() {
+		return advertisements;
+	}
+
+	public void setAdvertisements(ArrayList<Advertisement> advertisements) {
+		this.advertisements = advertisements;
 	}
 }

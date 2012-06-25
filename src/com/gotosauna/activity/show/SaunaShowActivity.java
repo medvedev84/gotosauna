@@ -1,118 +1,72 @@
 package com.gotosauna.activity.show;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.gotosauna.R;
+import com.gotosauna.core.Advertisement;
 import com.gotosauna.core.Sauna;
-import com.gotosauna.util.JSONDownloader;
-
+import com.gotosauna.core.SaunaItem;
+import com.gotosauna.util.GlobalStore;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ExpandableListView;
 import android.widget.TextView;
 
-public class SaunaShowActivity extends Activity  {
-	private static final String URL_KEY = "url";
-	private static final String PHOTOS_SAUNAS_URL = "http://go-to-sauna.ru/sauna_photos/";
-	private Sauna sauna;
+public class SaunaShowActivity extends Activity  {	
+	ArrayList<SaunaItem> sauna_items = new ArrayList<SaunaItem>();
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sauna_show);
 		
-  		Bundle extras = getIntent().getExtras(); 
-  		final String url = extras.getString(URL_KEY);
-  		
-  		runOnUiThread(new Runnable() {
-  		     public void run() {
-  		    	new DownloadWebpageText().execute(url);
-  		    }
-  		});  			
+		GlobalStore globalStore = ((GlobalStore) getApplicationContext());
+  		final Advertisement adv = globalStore.getAdvertisements().get(0);  				
+  	  	Sauna sauna = (Sauna) getIntent().getSerializableExtra("Sauna");  	
+  	  		
+  		initSaunaUI(sauna);  		
+  		initAdvUI(adv, R.id.company1, R.id.description1, R.id.buttonCallAdv1);	
+  		initAdvUI(adv, R.id.company2, R.id.description2, R.id.buttonCallAdv2);	
 	}
 	
-	public void onButtonClicked(View v) {
-    	Intent intent = new Intent(Intent.ACTION_CALL);
-    	intent.setData(Uri.parse("tel:" + sauna.getPhoneNumber()));
-    	startActivity(intent);   	    
-	}
-	
-    public String prepareUrl(){    	
-    	StringBuffer sb = new StringBuffer(PHOTOS_SAUNAS_URL);
-    	sb.append(sauna.getId());
-    	sb.append("?json=true");	    	       
-    	return sb.toString();
-    }		
-		    
-    public class DownloadWebpageText extends AsyncTask<String, Integer, JSONObject> {
-		@Override
-		protected JSONObject doInBackground(String... urls) {
-            String url = urls[0];
-			try {
-                 return (JSONObject) JSONDownloader.downloadUrl(url, false);
-            } catch (IOException e) {
-                return null;
-            }		
-		}
-       
-		@Override
-		 protected void onProgressUpdate(Integer... progress) {
-			 super.onProgressUpdate(progress);			 
-		 }
-	     
-		@Override
-		protected void onPostExecute(JSONObject result) {
-			fillView(result);
-		}
-		
-	    private void fillView(JSONObject result){
-			try {	
-				sauna = new Sauna(result.getString("id"), result.getString("name"), result.getString("phone_number1"), result.getString("full_address"));
-				
-                TextView name = (TextView) findViewById(R.id.name);
-                name.setText(sauna.getName());
-                
-                TextView address = (TextView) findViewById(R.id.address);
-                address.setText(sauna.getAddress());
+	private void initSaunaUI(final Sauna sauna){  	   		
+        TextView name = (TextView) findViewById(R.id.name);
+        name.setText(sauna.getName());
+        
+        TextView address = (TextView) findViewById(R.id.address);
+        address.setText(sauna.getAddress());
 
-                Button button = (Button) findViewById(R.id.buttonCall);
-                button.setText(sauna.getPhoneNumber());
-                
-                JSONArray array = result.getJSONArray("sauna_items");				
-                ArrayList<String> groups = new ArrayList<String>();
-                ArrayList<ArrayList<String>> children = new ArrayList<ArrayList<String>>();
-                                           
-                for (int i = 0; i < array.length(); i++) {
-                    JSONObject jo = (JSONObject) array.get(i);
-                    groups.add(jo.getString("name"));
-                    
-                    ArrayList<String> content = new ArrayList<String>();
-                    content.add(jo.getString("description"));
-                    content.add(jo.getString("min_price"));
-                    content.add(jo.getString("capacity"));
-                    children.add(content);
-                }                               
-                initExpandable(groups, children);                
-			} catch (JSONException e) {				
-			}   	 			 		
-	    }
-	  
-	    private void initExpandable(ArrayList<String> groups, ArrayList<ArrayList<String>> children){
-	    	ExpandableListView listView = (ExpandableListView) findViewById(R.id.sauna_items);
-	    	listView.setGroupIndicator(null);        
-	        ExpandableListAdapter adapter = new ExpandableListAdapter(getApplicationContext(), groups, children);
-	        listView.setAdapter(adapter);	
-	        listView.expandGroup(0);
-	    }   
-    } 	
+        Button buttonCall = (Button) findViewById(R.id.buttonCall);
+        buttonCall.setText(sauna.getPhoneNumber());	
+        buttonCall.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v)
+            {                	
+		    	Intent intent = new Intent(Intent.ACTION_CALL);
+		    	intent.setData(Uri.parse("tel:" + sauna.getPhoneNumber()));
+		    	startActivity(intent);                       
+            }
+        });          
+	}
+	
+	private void initAdvUI(final Advertisement adv, int company_id, int description_id, int button_id){  	   		
+        TextView company = (TextView) findViewById(company_id);
+        company.setText(adv.getCompanyName());
+          	
+        TextView description = (TextView) findViewById(description_id);
+        description.setText(adv.getDescription());
+        
+  		Button buttonCallAdv = (Button) findViewById(button_id);
+  		buttonCallAdv.setText(adv.getPhoneNumber()); 
+  		buttonCallAdv.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v)
+            {                	
+		    	Intent intent = new Intent(Intent.ACTION_CALL);
+		    	intent.setData(Uri.parse("tel:" + adv.getPhoneNumber()));
+		    	startActivity(intent);                      
+            }
+        });  
+	}				
 }
