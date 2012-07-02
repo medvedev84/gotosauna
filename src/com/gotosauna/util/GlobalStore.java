@@ -45,4 +45,14 @@ public class GlobalStore extends Application {
 	public void setAdvertisements(ArrayList<Advertisement> advertisements) {
 		this.advertisements = advertisements;
 	}
+	
+	public ArrayList<Advertisement> getAdvertisementsByCity(String cityId) {
+		ArrayList<Advertisement> result = new ArrayList<Advertisement>();		
+		for (Advertisement adv : advertisements) {
+			if (adv.getCityId().equals(cityId)) {
+				result.add(adv);	
+			}			
+		}		
+		return result;
+	}	
 }

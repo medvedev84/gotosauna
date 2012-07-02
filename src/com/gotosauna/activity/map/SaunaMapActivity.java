@@ -60,11 +60,7 @@ public class SaunaMapActivity extends MapActivity {
 					addSaunaToMap(addressList.get(0), sauna);
 				}
 			}
-		} catch (IOException e) {			
-				AlertDialog.Builder dialog = new AlertDialog.Builder(getApplicationContext());
-				dialog.setTitle(getResources().getString(R.string.application_error));
-				dialog.setMessage(getResources().getString(R.string.could_not_find_location));				
-				dialog.show();
+		} catch (IOException e) {
 		}		
 	}
 	

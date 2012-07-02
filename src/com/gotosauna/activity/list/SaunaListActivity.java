@@ -38,6 +38,7 @@ import android.widget.Toast;
 
 public class SaunaListActivity extends ListActivity  {
 	private static final String URL_KEY = "url";
+	private static final String CITY_ID_KEY = "cityId";	
 	private static final int ACTIVITY_SHOW = 1;
 	private static final String SHOW_SAUNA_URL = "http://go-to-sauna.ru/saunas/";
 	
@@ -46,6 +47,7 @@ public class SaunaListActivity extends ListActivity  {
 	
 	private HashMap<String, Sauna> saunas = new HashMap<String, Sauna>();
 	Sauna selectedSauna;
+	private String cityId;
 	
 	ArrayAdapter<String> adapter = null;
 	
@@ -57,7 +59,8 @@ public class SaunaListActivity extends ListActivity  {
   	    
   		Bundle extras = getIntent().getExtras(); 
   		final String url = extras.getString(URL_KEY);
-
+  		cityId = extras.getString(CITY_ID_KEY);
+  		
   		runOnUiThread(new Runnable() {
   		     public void run() {
   		    	new DownloadWebpageText().execute(url);
@@ -147,8 +150,10 @@ public class SaunaListActivity extends ListActivity  {
 				ArrayList<String> listItems = new ArrayList<String>();
                 for (int i = 0; i < result.length(); i++) {
                     JSONObject jo = (JSONObject) result.get(i);                    
-                    listItems.add(jo.getString("name"));                    
-                    saunas.put(jo.getString("name"), new Sauna(jo.getString("id"), jo.getString("name"), jo.getString("phone_number1")));                    
+                    listItems.add(jo.getString("name"));        
+                    Sauna sauna = new Sauna(jo.getString("id"), jo.getString("name"), jo.getString("phone_number1"));
+                    sauna.setCityId(cityId);
+                    saunas.put(jo.getString("name"), sauna);                    
                 }				
                 adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.sauna_item, listItems);
 				setListAdapter(adapter); 

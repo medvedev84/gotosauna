@@ -22,6 +22,7 @@ import android.widget.TextView;
 public class CityListActivity extends ListActivity  {
 	
 	private static final String URL_KEY = "url";
+	private static final String CITY_ID_KEY = "cityId";	
 		
 	private static final int ACTIVITY_SHOW = 1;
 	
@@ -58,6 +59,7 @@ public class CityListActivity extends ListActivity  {
 				String url = prepareUrl();
 				Intent intent = new Intent(getApplicationContext(), SaunaListActivity.class);
 				intent.putExtra(URL_KEY, url);
+				intent.putExtra(CITY_ID_KEY, selectedCity.getId());
 				startActivityForResult(intent, ACTIVITY_SHOW);                    
 			}
 		}); 

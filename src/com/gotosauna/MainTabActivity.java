@@ -7,6 +7,9 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TextView;
@@ -26,6 +29,29 @@ public class MainTabActivity extends TabActivity {
         	 }
         });        
 	}
+	
+	@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {	  
+	    switch (item.getItemId()) {
+	        case R.id.about:
+            	Intent intent = new Intent(getApplicationContext(), AboutActivity.class);
+    			startActivity(intent);    
+	            return true;
+	        case R.id.settings:
+            	Intent intent2 = new Intent(getApplicationContext(), SettingsActivity.class);
+    			startActivity(intent2);   
+	            return true;            
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
+	}	
 	
 	public void initUI() {	   
 	    Resources res = getResources();

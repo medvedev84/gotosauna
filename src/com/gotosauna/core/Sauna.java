@@ -10,6 +10,7 @@ public class Sauna implements Serializable {
 	private String name;
 	private String phoneNumber;
 	private String address;
+	private String cityId;
 	
 	private ArrayList<SaunaItem> items = new ArrayList<SaunaItem>();
 	
@@ -61,5 +62,13 @@ public class Sauna implements Serializable {
 
 	public void setItems(ArrayList<SaunaItem> items) {
 		this.items = items;
+	}
+
+	public String getCityId() {
+		return cityId;
+	}
+
+	public void setCityId(String cityId) {
+		this.cityId = cityId;
 	}
 }

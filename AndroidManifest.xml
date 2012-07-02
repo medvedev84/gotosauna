@@ -23,6 +23,14 @@
             </intent-filter>
         </activity>
         <activity 
+        	android:name=".AboutActivity" 
+        	android:screenOrientation="user">
+        </activity>    
+        <activity 
+        	android:name=".SettingsActivity" 
+        	android:screenOrientation="user">
+        </activity> 
+        <activity 
         	android:name=".activity.list.SaunaListActivity" 
         	android:screenOrientation="user"
         	android:configChanges="orientation|keyboardHidden" >
