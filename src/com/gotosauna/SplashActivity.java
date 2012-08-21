@@ -21,12 +21,14 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class SplashActivity extends Activity {
@@ -46,6 +48,9 @@ public class SplashActivity extends Activity {
   		globalStore.setScreenWidth(display.getWidth());
   		globalStore.setScreenHeight(display.getHeight());
   		
+        TextView about = (TextView) findViewById(R.id.textViewSplash);
+        about.setMovementMethod(LinkMovementMethod.getInstance());  		
+  		
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {                    	                    	                    	                    	                    	
@@ -63,10 +68,10 @@ public class SplashActivity extends Activity {
             final Button buttonSearch = (Button) findViewById(R.id.buttonContinue);
             buttonSearch.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v)
-                {                	
+                {     
                 	Intent intent = new Intent(getApplicationContext(), MainTabActivity.class);
                 	intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        			startActivity(intent);                      
+        			startActivity(intent);                  	
                 }
             });
            

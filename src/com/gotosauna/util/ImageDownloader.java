@@ -29,6 +29,8 @@ import android.util.Log;
 import android.widget.ImageView;
 
 public class ImageDownloader {
+	
+	private static String IMAGE_DIRECTORY = "data/gotosauna/images";
 
 	public Map<String,Bitmap> imageCache;
 	
@@ -110,7 +112,7 @@ public class ImageDownloader {
 			File sdDir = android.os.Environment.getExternalStorageDirectory();  
 			
 			//TODO : Change your diretcory here
-			cacheDir = new File(sdDir,"data/tac/images");
+			cacheDir = new File(sdDir, IMAGE_DIRECTORY);
 		}
 		else
 			cacheDir = context.getCacheDir();

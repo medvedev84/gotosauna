@@ -13,12 +13,14 @@ import com.gotosauna.activity.show.SaunaShowActivity;
 import com.gotosauna.activity.show.SaunaTabActivity;
 import com.gotosauna.core.Sauna;
 import com.gotosauna.core.SaunaItem;
+import com.gotosauna.util.Constants;
 import com.gotosauna.util.JSONDownloader;
 
 import android.app.Dialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -65,10 +67,8 @@ public class SaunaListActivity extends ListActivity  {
   		     public void run() {
   		    	new DownloadWebpageText().execute(url);
   		    }
-  		});  	
-  		  		
-  		EditText filterText = (EditText) findViewById(R.building_list.search_box);
-  	    filterText.addTextChangedListener(filterTextWatcher);
+  		});  		  		  		
+		
 	}
 	
     @Override  
@@ -146,33 +146,44 @@ public class SaunaListActivity extends ListActivity  {
 		}		
 		
 	    private void fillListView(JSONArray result){
-			try {				
-				ArrayList<String> listItems = new ArrayList<String>();
-                for (int i = 0; i < result.length(); i++) {
-                    JSONObject jo = (JSONObject) result.get(i);                    
-                    listItems.add(jo.getString("name"));        
-                    Sauna sauna = new Sauna(jo.getString("id"), jo.getString("name"), jo.getString("phone_number1"));
-                    sauna.setCityId(cityId);
-                    saunas.put(jo.getString("name"), sauna);                    
-                }				
-                adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.sauna_item, listItems);
-				setListAdapter(adapter); 
-			} catch (JSONException e) {				
-			}   	 
-			
-  	  		ListView lv = getListView();
-  			lv.setTextFilterEnabled(true);		
-  			
-  			lv.setOnItemClickListener(new OnItemClickListener() {
-  				public void onItemClick(AdapterView<?> arg0, View view, int arg2, long arg3) {
-  					selectedSauna = saunas.get((String)((TextView) view).getText());  					  					                					  
-  					StringBuffer sb = new StringBuffer(SHOW_SAUNA_URL).append(selectedSauna.getId()).append("?json=true");
-  	                Intent intent = new Intent(getApplicationContext(), SaunaTabActivity.class);
-  	                intent.putExtra("Sauna", popualteSauna(selectedSauna, sb.toString()));
-  	                startActivityForResult(intent, ACTIVITY_SHOW);                    
-  				}
-  			});  			 
-  			registerForContextMenu(lv);
+	    	if (result.length() > 0) {
+				try {				
+					ArrayList<String> listItems = new ArrayList<String>();
+	                for (int i = 0; i < result.length(); i++) {
+	                    JSONObject jo = (JSONObject) result.get(i);                    
+	                    listItems.add(jo.getString("name"));        
+	                    Sauna sauna = new Sauna(jo.getString("id"), jo.getString("name"), jo.getString("phone_number1"));
+	                    sauna.setCityId(cityId);
+	                    saunas.put(jo.getString("name"), sauna);                    
+	                }				
+	                adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.sauna_item, listItems);
+					setListAdapter(adapter); 
+				} catch (JSONException e) {				
+				}   	 
+				
+	  	  		ListView lv = getListView();
+	  			lv.setTextFilterEnabled(true);		
+	  			
+	  			lv.setOnItemClickListener(new OnItemClickListener() {
+	  				public void onItemClick(AdapterView<?> arg0, View view, int arg2, long arg3) {
+	  	                SharedPreferences settings = getSharedPreferences(Constants.PREFS_NAME, 0);  	              
+	  	                int savedResolutionId = settings.getInt(Constants.QUALITY_KEY, 0);     	                
+	  					selectedSauna = saunas.get((String)((TextView) view).getText());    					
+	  					StringBuffer sb = new StringBuffer(SHOW_SAUNA_URL).append(selectedSauna.getId()).append("?json=true");
+	  	                Intent intent = new Intent(getApplicationContext(), SaunaTabActivity.class);
+	  	                intent.putExtra(Constants.SAUNA_KEY, popualteSauna(selectedSauna, sb.toString()));
+	  	                intent.putExtra(Constants.TAB_NUM_ID, 0);
+	  	                intent.putExtra(Constants.RESOLUTION_ID_KEY, savedResolutionId);  	 
+	  	                startActivityForResult(intent, ACTIVITY_SHOW);                    
+	  				}
+	  			});  			 
+	  			registerForContextMenu(lv);
+	  			
+		  		EditText filterText = (EditText) findViewById(R.building_list.search_box);
+		  	    filterText.addTextChangedListener(filterTextWatcher);		    		
+	    	} else {
+	        	Toast.makeText(getApplicationContext(), getResources().getString(R.string.saunas_not_found), Toast.LENGTH_LONG).show();         		   	            
+	    	}	    		  		
 	    }    
     } 	
     

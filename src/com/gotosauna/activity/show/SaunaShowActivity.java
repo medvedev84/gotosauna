@@ -6,6 +6,7 @@ import com.gotosauna.R;
 import com.gotosauna.core.Advertisement;
 import com.gotosauna.core.Sauna;
 import com.gotosauna.core.SaunaItem;
+import com.gotosauna.util.Constants;
 import com.gotosauna.util.GlobalStore;
 import android.app.Activity;
 import android.content.Intent;
@@ -18,18 +19,21 @@ import android.widget.TextView;
 
 public class SaunaShowActivity extends Activity  {	
 	ArrayList<SaunaItem> sauna_items = new ArrayList<SaunaItem>();
+	SaunaTabActivity parentActivity;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sauna_show);
 				  				  			
-  	  	Sauna sauna = (Sauna) getIntent().getSerializableExtra("Sauna");  	  	  	  	  
+  	  	Sauna sauna = (Sauna) getIntent().getSerializableExtra(Constants.SAUNA_KEY);  	  	  	  	  
   		initSaunaUI(sauna);  
   	  
   		GlobalStore globalStore = ((GlobalStore) getApplicationContext());
   	  	ArrayList<Advertisement> advertisements = globalStore.getAdvertisementsByCity(sauna.getCityId());
   	  	
+  		parentActivity = (SaunaTabActivity) this.getParent();
+  		
   	  	if (advertisements.size() >= 1) {
   	  		TextView additional = (TextView) findViewById(R.id.additional);
   	  		additional.setVisibility(0);  	  	
@@ -51,6 +55,13 @@ public class SaunaShowActivity extends Activity  {
         
         TextView address = (TextView) findViewById(R.id.address);
         address.setText(sauna.getAddress());
+        address.setOnClickListener(
+        		new View.OnClickListener() 
+                {         
+        			public void onClick(View view)  {   
+        				parentActivity.switchTab(3);             
+                    }
+                });
 
         Button buttonCall = (Button) findViewById(R.id.buttonCall);
         buttonCall.setText(sauna.getPhoneNumber());	

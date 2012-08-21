@@ -1,14 +1,15 @@
 <resources>
 
-    <string-array name="cities">
-        <item>Ижевск</item>
-        <item>Воткинск</item>
-        <item>Сарапул</item>
-        <item>Можга</item>
-        <item>Глазов</item>
-        <item>Нефтекамск</item>
-        <item>Набережные Челны</item>
-        <item>Нижнекамск</item>
+    <string-array name="resolutions">
+        <item>Низкое</item>
+        <item>Очень высокое</item>
     </string-array>
     
+    <string-array name="resolutions_ext">
+        <item>Низкое</item>
+        <item>Среднее</item>
+        <item>Высокое</item>
+        <item>Очень высокое</item>
+    </string-array>
+        
 </resources>

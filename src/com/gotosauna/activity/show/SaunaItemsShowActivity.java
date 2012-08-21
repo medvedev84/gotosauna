@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import com.gotosauna.R;
 import com.gotosauna.core.Sauna;
 import com.gotosauna.core.SaunaItem;
+import com.gotosauna.util.Constants;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.ExpandableListView;
@@ -17,7 +19,7 @@ public class SaunaItemsShowActivity extends Activity  {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sauna_items_show);
   		
-  		Sauna sauna = (Sauna) getIntent().getSerializableExtra("Sauna");  		
+  		Sauna sauna = (Sauna) getIntent().getSerializableExtra(Constants.SAUNA_KEY);  		
   	    ArrayList<String> groups = new ArrayList<String>();
         ArrayList<ArrayList<String>> children = new ArrayList<ArrayList<String>>();
              

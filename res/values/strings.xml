@@ -28,7 +28,7 @@
 	<string name="could_not_find_location">Не удалось определить местоположение</string>
 	<string name="loading_data">Загрузка данных</string>
 	<string name="please_wait">Пожалуйста, подождите...</string>
-	<string name="splash">Вся информация предоставлена сайтом www.go-to-sauna.ru. </string>
+	<string name="splash">Вся информация предоставлена сайтом <a href="http://www.go-to-sauna.ru">www.go-to-sauna.ru</a></string>
 	<string name="text_continue">Продолжить</string>
 	<string name="error_no_network">Не удается установить соединение. Проверьте настройки подключения к сети Интернет.</string>
 	<string name="error_io">Ошибка получения данных</string>
@@ -39,6 +39,14 @@
 	<string name="settings">Настройки</string>
 	<string name="quit">Выйти</string>
 	<string name="save">Сохранить</string>
-	<string name="about_content">Вся информация предоставлена сайтом www.go-to-sauna.ru. По вопросам работы приложения, добавления новых объектов каталог и размещения рекламы пишите на e-mail: gotosauna@gmail.com</string>
+	<string name="about_content">Вся информация предоставлена сайтом <a href="http://www.go-to-sauna.ru">www.go-to-sauna.ru</a> — каталог саун и бань в Ижевске, Казани, Кирове, Перми, Уфе и других городах. По вопросам работы приложения, добавления новых объектов в каталог и размещения рекламы обращаться: gotosauna@gmail.com</string>
+	<string name="send_email">Написать письмо</string>
+	<string name="gotosauna_email">gotosauna@gmail.com</string>
+	<string name="send_using">Отправить письмо, используя...</string>
 	<string name="settings_saved">Изменения вступят после перезапуска приложения. Пожалуйста, выйдите из приложения и откройте его снова.</string>
+	<string name="photos_resolution">Качество фотографий</string>	
+	<string name="gallery_info">Задать качество скачиваемых фотографий</string>		
+	<string name="resolution_info">Загрузка фотографий в высоком качестве потребляет больше интернет трафика!</string>
+	<string name="foto_is_absent">Фотографии отсутствуют</string>
+	<string name="saunas_not_found">По вашему запросу саун не найдено. Попробуйте поменять критерии поиска.</string>
 </resources>

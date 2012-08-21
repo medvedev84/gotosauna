@@ -38,12 +38,10 @@
 		    	android:layout_marginTop="10dip">    	
 		    	<Button
 		        	android:id="@+id/buttonCall"        
-		        	android:layout_width="wrap_content"
-		        	android:layout_height="wrap_content"
-		        	android:background="@drawable/ic_button_call"
+		        	android:layout_width="150dp"			        
+		        	android:layout_height="wrap_content"		        
 					android:layout_marginRight="10dp" 		              
 		        	android:layout_gravity="center"
-		        	android:paddingLeft="15dp"
 		        	 />	              	
 		    </RelativeLayout>    
 	    </LinearLayout>  	    
@@ -83,11 +81,9 @@
 		    	android:layout_marginTop="5dip">    		      	
 		    	<Button
 		        	android:id="@+id/buttonCallAdv1"        
-		        	android:layout_width="wrap_content"
-		        	android:layout_height="wrap_content"
-		        	android:background="@drawable/ic_button_call"								             
-		        	android:layout_gravity="center"        	
-		        	android:paddingLeft="15dp"
+		        	android:layout_width="150dp"
+		        	android:layout_height="wrap_content"		        					            
+		        	android:layout_gravity="center"        			      
 		        	 />	 	        
 		    </RelativeLayout>  	    	    
 	    </LinearLayout>  	   
@@ -116,15 +112,13 @@
 		    	xmlns:android="http://schemas.android.com/apk/res/android"
 		    	android:layout_height="wrap_content" 
 		    	android:layout_width="fill_parent"
-		    	android:layout_marginTop="5dip">    		      	
+		    	android:layout_marginTop="5dip">    		      		   
 		    	<Button
 		        	android:id="@+id/buttonCallAdv2"        
-		        	android:layout_width="wrap_content"
-		        	android:layout_height="wrap_content"
-		        	android:background="@drawable/ic_button_call"									             
-		        	android:layout_gravity="center"        	
-		        	android:paddingLeft="15dp"
-		        	 />	 	        
+		        	android:layout_width="150dp"
+		        	android:layout_height="wrap_content"		        					            
+		        	android:layout_gravity="center"        			      
+		        	 />	 		        	      
 		    </RelativeLayout>  	    	    
 	    </LinearLayout>  			
 		

@@ -2,16 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" > 
-    
-    <TextView   
-        android:id="@+id/gallery_header"
-        android:layout_width="fill_parent" 
-        android:layout_height="wrap_content" 
-        android:gravity="center"
-        android:text="@string/photo_gallery"
-         /> 
-             
+    android:layout_height="fill_parent" >    
+         
+    <Spinner 
+        android:id="@+id/spinnerResolution"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:drawSelectorOnTop="true"
+        android:visibility="invisible"	      
+    />    
+          
 	<GridView xmlns:android="http://schemas.android.com/apk/res/android" 
 	    android:id="@+id/gridview"
 	    android:layout_width="fill_parent" 
@@ -21,5 +21,5 @@
 	    android:horizontalSpacing="10dp"
 	    android:stretchMode="columnWidth"
 	    android:gravity="center"
-	/> 
+	/> 	
 </LinearLayout>

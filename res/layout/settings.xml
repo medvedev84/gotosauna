@@ -20,13 +20,28 @@
 	    />
 	
 	    <Spinner 
-	        android:id="@+id/spinner"
+	        android:id="@+id/spinnerCity"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:drawSelectorOnTop="true"
 	        android:prompt="@string/city"
 	    />
 	    
+	    <TextView
+	        android:id="@+id/textViewResolution"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="10dip"
+	        android:text="@string/photos_resolution"        
+	    />
+	
+	    <Spinner 
+	        android:id="@+id/spinnerResolution"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:drawSelectorOnTop="true"	        
+	    />
+	    	    
 	    <Button
 	        android:id="@+id/buttonSave"
 	        android:layout_width="200dp" 
